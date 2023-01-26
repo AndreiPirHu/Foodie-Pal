@@ -14,6 +14,11 @@
 		7579066029810A1E003D5155 /* Foodie_PalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579065F29810A1E003D5155 /* Foodie_PalTests.swift */; };
 		7579066A29810A1F003D5155 /* Foodie_PalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579066929810A1F003D5155 /* Foodie_PalUITests.swift */; };
 		7579066C29810A1F003D5155 /* Foodie_PalUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579066B29810A1F003D5155 /* Foodie_PalUITestsLaunchTests.swift */; };
+		7579067C2981252F003D5155 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7579067B2981252F003D5155 /* FirebaseAuth */; };
+		7579067E2981252F003D5155 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 7579067D2981252F003D5155 /* FirebaseFirestore */; };
+		757906802981252F003D5155 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7579067F2981252F003D5155 /* FirebaseFirestoreSwift */; };
+		757906822981252F003D5155 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 757906812981252F003D5155 /* FirebaseFunctions */; };
+		75D2ECEF29826B2500B4217D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 75D2ECEE29826B2400B4217D /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +49,7 @@
 		7579066529810A1F003D5155 /* Foodie PalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Foodie PalUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7579066929810A1F003D5155 /* Foodie_PalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalUITests.swift; sourceTree = "<group>"; };
 		7579066B29810A1F003D5155 /* Foodie_PalUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		75D2ECEE29826B2400B4217D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +57,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7579067C2981252F003D5155 /* FirebaseAuth in Frameworks */,
+				7579067E2981252F003D5155 /* FirebaseFirestore in Frameworks */,
+				757906802981252F003D5155 /* FirebaseFirestoreSwift in Frameworks */,
+				757906822981252F003D5155 /* FirebaseFunctions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,6 +107,7 @@
 				7579064E29810A17003D5155 /* Foodie_PalApp.swift */,
 				7579065029810A17003D5155 /* ContentView.swift */,
 				7579065229810A1D003D5155 /* Assets.xcassets */,
+				75D2ECEE29826B2400B4217D /* GoogleService-Info.plist */,
 				7579065429810A1D003D5155 /* Preview Content */,
 			);
 			path = "Foodie Pal";
@@ -143,6 +154,12 @@
 			dependencies = (
 			);
 			name = "Foodie Pal";
+			packageProductDependencies = (
+				7579067B2981252F003D5155 /* FirebaseAuth */,
+				7579067D2981252F003D5155 /* FirebaseFirestore */,
+				7579067F2981252F003D5155 /* FirebaseFirestoreSwift */,
+				757906812981252F003D5155 /* FirebaseFunctions */,
+			);
 			productName = "Foodie Pal";
 			productReference = 7579064B29810A17003D5155 /* Foodie Pal.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +232,9 @@
 				Base,
 			);
 			mainGroup = 7579064229810A16003D5155;
+			packageReferences = (
+				7579067A2981252F003D5155 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 7579064C29810A17003D5155 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -233,6 +253,7 @@
 			files = (
 				7579065629810A1D003D5155 /* Preview Assets.xcassets in Resources */,
 				7579065329810A1D003D5155 /* Assets.xcassets in Resources */,
+				75D2ECEF29826B2500B4217D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -577,6 +598,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7579067A2981252F003D5155 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7579067B2981252F003D5155 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7579067A2981252F003D5155 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		7579067D2981252F003D5155 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7579067A2981252F003D5155 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		7579067F2981252F003D5155 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7579067A2981252F003D5155 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+		757906812981252F003D5155 /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7579067A2981252F003D5155 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7579064329810A16003D5155 /* Project object */;
 }
