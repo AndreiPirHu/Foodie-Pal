@@ -6,16 +6,16 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct ContentView: View {
+    let db = Firestore.firestore()
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            Text("Hej")
         }
-        .padding()
+        
     }
 }
 
