@@ -19,6 +19,9 @@
 		757906802981252F003D5155 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7579067F2981252F003D5155 /* FirebaseFirestoreSwift */; };
 		757906822981252F003D5155 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 757906812981252F003D5155 /* FirebaseFunctions */; };
 		75D2ECEF29826B2500B4217D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 75D2ECEE29826B2400B4217D /* GoogleService-Info.plist */; };
+		75D2ECF2298416F000B4217D /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2ECF1298416F000B4217D /* MapView.swift */; };
+		75D2ECF42984170600B4217D /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2ECF32984170600B4217D /* ListView.swift */; };
+		75D2ECF62984171500B4217D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2ECF52984171500B4217D /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +53,9 @@
 		7579066929810A1F003D5155 /* Foodie_PalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalUITests.swift; sourceTree = "<group>"; };
 		7579066B29810A1F003D5155 /* Foodie_PalUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		75D2ECEE29826B2400B4217D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		75D2ECF1298416F000B4217D /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		75D2ECF32984170600B4217D /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
+		75D2ECF52984171500B4217D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +110,7 @@
 		7579064D29810A17003D5155 /* Foodie Pal */ = {
 			isa = PBXGroup;
 			children = (
+				75D2ECF0298416AD00B4217D /* Views */,
 				7579064E29810A17003D5155 /* Foodie_PalApp.swift */,
 				7579065029810A17003D5155 /* ContentView.swift */,
 				7579065229810A1D003D5155 /* Assets.xcassets */,
@@ -136,6 +143,16 @@
 				7579066B29810A1F003D5155 /* Foodie_PalUITestsLaunchTests.swift */,
 			);
 			path = "Foodie PalUITests";
+			sourceTree = "<group>";
+		};
+		75D2ECF0298416AD00B4217D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				75D2ECF1298416F000B4217D /* MapView.swift */,
+				75D2ECF32984170600B4217D /* ListView.swift */,
+				75D2ECF52984171500B4217D /* SettingsView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,7 +295,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75D2ECF62984171500B4217D /* SettingsView.swift in Sources */,
+				75D2ECF42984170600B4217D /* ListView.swift in Sources */,
 				7579065129810A17003D5155 /* ContentView.swift in Sources */,
+				75D2ECF2298416F000B4217D /* MapView.swift in Sources */,
 				7579064F29810A17003D5155 /* Foodie_PalApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

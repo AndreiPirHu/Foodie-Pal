@@ -7,15 +7,29 @@
 
 import SwiftUI
 import Firebase
-import MapKit
 
 struct ContentView: View {
     let db = Firestore.firestore()
     
-    @State var regionStockholm = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 59.30713183216659, longitude: 18.07499885559082), span:MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
-    
+   
     var body: some View {
-        Map(coordinateRegion: $regionStockholm)
+        TabView {
+            MapView()
+                .tabItem() {
+                    Image(systemName: "map.fill")
+                        Text("Karta")
+                }
+            ListView()
+                .tabItem() {
+                    Image(systemName: "list.bullet")
+                    Text("Lista")
+                }
+            SettingsView()
+                .tabItem() {
+                    Image(systemName: "slider.horizontal.3")
+                        Text("Inställningar")
+                }
+        }
         
     }
 }
