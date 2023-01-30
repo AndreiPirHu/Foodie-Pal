@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1073540350623-mg7qmre274p8smoc7oeqpttqfeb8qk4a.apps.googleusercontent.com</string>
+	<string>572328415130-n9l2p1nmnnoqer85uj3a5ef23r54av13.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1073540350623-mg7qmre274p8smoc7oeqpttqfeb8qk4a</string>
+	<string>com.googleusercontent.apps.572328415130-n9l2p1nmnnoqer85uj3a5ef23r54av13</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDUwvUxTJQrum5SXvxBmhYmMxNmbGk3mrA</string>
+	<string>AIzaSyCjBK4lJwxiSuj0WygtwGM8zKHbAVeklyk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1073540350623</string>
+	<string>572328415130</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.FirebaseGroceryList</string>
+	<string>com.example.Foodie-Pal</string>
 	<key>PROJECT_ID</key>
-	<string>xcodegrocerylist</string>
+	<string>foodie-pal-8f72f</string>
 	<key>STORAGE_BUCKET</key>
-	<string>xcodegrocerylist.appspot.com</string>
+	<string>foodie-pal-8f72f.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1073540350623:ios:61160a7aba51549d0098aa</string>
+	<string>1:572328415130:ios:80bfe2477800364551f423</string>
 </dict>
 </plist>
