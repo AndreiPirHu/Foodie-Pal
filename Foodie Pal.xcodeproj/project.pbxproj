@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		753D58852985451B00C132B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 753D58842985451A00C132B2 /* GoogleService-Info.plist */; };
+		753D588729854DE900C132B2 /* UserSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D588629854DE900C132B2 /* UserSettingsView.swift */; };
+		753D58892988020C00C132B2 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58882988020C00C132B2 /* UserSettings.swift */; };
+		753D588C298A349600C132B2 /* UserSettingsEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D588B298A349600C132B2 /* UserSettingsEditView.swift */; };
 		7579064F29810A17003D5155 /* Foodie_PalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579064E29810A17003D5155 /* Foodie_PalApp.swift */; };
 		7579065129810A17003D5155 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579065029810A17003D5155 /* ContentView.swift */; };
 		7579065329810A1D003D5155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7579065229810A1D003D5155 /* Assets.xcassets */; };
@@ -18,7 +22,6 @@
 		7579067E2981252F003D5155 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 7579067D2981252F003D5155 /* FirebaseFirestore */; };
 		757906802981252F003D5155 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7579067F2981252F003D5155 /* FirebaseFirestoreSwift */; };
 		757906822981252F003D5155 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 757906812981252F003D5155 /* FirebaseFunctions */; };
-		75D2ECEF29826B2500B4217D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 75D2ECEE29826B2400B4217D /* GoogleService-Info.plist */; };
 		75D2ECF2298416F000B4217D /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2ECF1298416F000B4217D /* MapView.swift */; };
 		75D2ECF42984170600B4217D /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2ECF32984170600B4217D /* ListView.swift */; };
 		75D2ECF62984171500B4217D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2ECF52984171500B4217D /* SettingsView.swift */; };
@@ -42,6 +45,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		753D58842985451A00C132B2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		753D588629854DE900C132B2 /* UserSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsView.swift; sourceTree = "<group>"; };
+		753D58882988020C00C132B2 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		753D588B298A349600C132B2 /* UserSettingsEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsEditView.swift; sourceTree = "<group>"; };
 		7579064B29810A17003D5155 /* Foodie Pal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Foodie Pal.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7579064E29810A17003D5155 /* Foodie_PalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalApp.swift; sourceTree = "<group>"; };
 		7579065029810A17003D5155 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -52,7 +59,6 @@
 		7579066529810A1F003D5155 /* Foodie PalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Foodie PalUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7579066929810A1F003D5155 /* Foodie_PalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalUITests.swift; sourceTree = "<group>"; };
 		7579066B29810A1F003D5155 /* Foodie_PalUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		75D2ECEE29826B2400B4217D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		75D2ECF1298416F000B4217D /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		75D2ECF32984170600B4217D /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		75D2ECF52984171500B4217D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -87,6 +93,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		753D588A298A344D00C132B2 /* Settings Tab */ = {
+			isa = PBXGroup;
+			children = (
+				75D2ECF52984171500B4217D /* SettingsView.swift */,
+				753D588629854DE900C132B2 /* UserSettingsView.swift */,
+				753D588B298A349600C132B2 /* UserSettingsEditView.swift */,
+			);
+			path = "Settings Tab";
+			sourceTree = "<group>";
+		};
 		7579064229810A16003D5155 = {
 			isa = PBXGroup;
 			children = (
@@ -114,8 +130,9 @@
 				7579064E29810A17003D5155 /* Foodie_PalApp.swift */,
 				7579065029810A17003D5155 /* ContentView.swift */,
 				7579065229810A1D003D5155 /* Assets.xcassets */,
-				75D2ECEE29826B2400B4217D /* GoogleService-Info.plist */,
+				753D58842985451A00C132B2 /* GoogleService-Info.plist */,
 				7579065429810A1D003D5155 /* Preview Content */,
+				753D58882988020C00C132B2 /* UserSettings.swift */,
 			);
 			path = "Foodie Pal";
 			sourceTree = "<group>";
@@ -148,9 +165,9 @@
 		75D2ECF0298416AD00B4217D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				753D588A298A344D00C132B2 /* Settings Tab */,
 				75D2ECF1298416F000B4217D /* MapView.swift */,
 				75D2ECF32984170600B4217D /* ListView.swift */,
-				75D2ECF52984171500B4217D /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -270,7 +287,7 @@
 			files = (
 				7579065629810A1D003D5155 /* Preview Assets.xcassets in Resources */,
 				7579065329810A1D003D5155 /* Assets.xcassets in Resources */,
-				75D2ECEF29826B2500B4217D /* GoogleService-Info.plist in Resources */,
+				753D58852985451B00C132B2 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +316,9 @@
 				75D2ECF42984170600B4217D /* ListView.swift in Sources */,
 				7579065129810A17003D5155 /* ContentView.swift in Sources */,
 				75D2ECF2298416F000B4217D /* MapView.swift in Sources */,
+				753D58892988020C00C132B2 /* UserSettings.swift in Sources */,
+				753D588729854DE900C132B2 /* UserSettingsView.swift in Sources */,
+				753D588C298A349600C132B2 /* UserSettingsEditView.swift in Sources */,
 				7579064F29810A17003D5155 /* Foodie_PalApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
