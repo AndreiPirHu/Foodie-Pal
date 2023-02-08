@@ -11,6 +11,7 @@
 		753D588729854DE900C132B2 /* UserSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D588629854DE900C132B2 /* UserSettingsView.swift */; };
 		753D58892988020C00C132B2 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58882988020C00C132B2 /* UserSettings.swift */; };
 		753D588C298A349600C132B2 /* UserSettingsEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D588B298A349600C132B2 /* UserSettingsEditView.swift */; };
+		753D588F298CDEA800C132B2 /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D588E298CDEA800C132B2 /* MapModel.swift */; };
 		7579064F29810A17003D5155 /* Foodie_PalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579064E29810A17003D5155 /* Foodie_PalApp.swift */; };
 		7579065129810A17003D5155 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579065029810A17003D5155 /* ContentView.swift */; };
 		7579065329810A1D003D5155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7579065229810A1D003D5155 /* Assets.xcassets */; };
@@ -49,6 +50,8 @@
 		753D588629854DE900C132B2 /* UserSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsView.swift; sourceTree = "<group>"; };
 		753D58882988020C00C132B2 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		753D588B298A349600C132B2 /* UserSettingsEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsEditView.swift; sourceTree = "<group>"; };
+		753D588D298BE1C700C132B2 /* Foodie-Pal-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Foodie-Pal-Info.plist"; sourceTree = SOURCE_ROOT; };
+		753D588E298CDEA800C132B2 /* MapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
 		7579064B29810A17003D5155 /* Foodie Pal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Foodie Pal.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7579064E29810A17003D5155 /* Foodie_PalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalApp.swift; sourceTree = "<group>"; };
 		7579065029810A17003D5155 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -126,6 +129,7 @@
 		7579064D29810A17003D5155 /* Foodie Pal */ = {
 			isa = PBXGroup;
 			children = (
+				753D588D298BE1C700C132B2 /* Foodie-Pal-Info.plist */,
 				75D2ECF0298416AD00B4217D /* Views */,
 				7579064E29810A17003D5155 /* Foodie_PalApp.swift */,
 				7579065029810A17003D5155 /* ContentView.swift */,
@@ -133,6 +137,7 @@
 				753D58842985451A00C132B2 /* GoogleService-Info.plist */,
 				7579065429810A1D003D5155 /* Preview Content */,
 				753D58882988020C00C132B2 /* UserSettings.swift */,
+				753D588E298CDEA800C132B2 /* MapModel.swift */,
 			);
 			path = "Foodie Pal";
 			sourceTree = "<group>";
@@ -313,6 +318,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75D2ECF62984171500B4217D /* SettingsView.swift in Sources */,
+				753D588F298CDEA800C132B2 /* MapModel.swift in Sources */,
 				75D2ECF42984170600B4217D /* ListView.swift in Sources */,
 				7579065129810A17003D5155 /* ContentView.swift in Sources */,
 				75D2ECF2298416F000B4217D /* MapView.swift in Sources */,
@@ -480,6 +486,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Foodie Pal/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Foodie-Pal-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -508,6 +515,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Foodie Pal/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Foodie-Pal-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
