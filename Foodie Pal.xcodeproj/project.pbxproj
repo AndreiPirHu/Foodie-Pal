@@ -12,6 +12,9 @@
 		753D58892988020C00C132B2 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58882988020C00C132B2 /* UserSettings.swift */; };
 		753D588C298A349600C132B2 /* UserSettingsEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D588B298A349600C132B2 /* UserSettingsEditView.swift */; };
 		753D588F298CDEA800C132B2 /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D588E298CDEA800C132B2 /* MapModel.swift */; };
+		753D5894298FE34900C132B2 /* SheetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D5893298FE34800C132B2 /* SheetExtension.swift */; };
+		753D5896298FFB8700C132B2 /* FoodTrucks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D5895298FFB8600C132B2 /* FoodTrucks.swift */; };
+		753D589B29980CA700C132B2 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 753D589A29980CA700C132B2 /* FirebaseStorage */; };
 		7579064F29810A17003D5155 /* Foodie_PalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579064E29810A17003D5155 /* Foodie_PalApp.swift */; };
 		7579065129810A17003D5155 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579065029810A17003D5155 /* ContentView.swift */; };
 		7579065329810A1D003D5155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7579065229810A1D003D5155 /* Assets.xcassets */; };
@@ -52,6 +55,8 @@
 		753D588B298A349600C132B2 /* UserSettingsEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsEditView.swift; sourceTree = "<group>"; };
 		753D588D298BE1C700C132B2 /* Foodie-Pal-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Foodie-Pal-Info.plist"; sourceTree = SOURCE_ROOT; };
 		753D588E298CDEA800C132B2 /* MapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
+		753D5893298FE34800C132B2 /* SheetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetExtension.swift; sourceTree = "<group>"; };
+		753D5895298FFB8600C132B2 /* FoodTrucks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTrucks.swift; sourceTree = "<group>"; };
 		7579064B29810A17003D5155 /* Foodie Pal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Foodie Pal.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7579064E29810A17003D5155 /* Foodie_PalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalApp.swift; sourceTree = "<group>"; };
 		7579065029810A17003D5155 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -75,6 +80,7 @@
 				7579067C2981252F003D5155 /* FirebaseAuth in Frameworks */,
 				7579067E2981252F003D5155 /* FirebaseFirestore in Frameworks */,
 				757906802981252F003D5155 /* FirebaseFirestoreSwift in Frameworks */,
+				753D589B29980CA700C132B2 /* FirebaseStorage in Frameworks */,
 				757906822981252F003D5155 /* FirebaseFunctions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,6 +112,21 @@
 			path = "Settings Tab";
 			sourceTree = "<group>";
 		};
+		753D5892298FE2DE00C132B2 /* Map Tab */ = {
+			isa = PBXGroup;
+			children = (
+				75D2ECF1298416F000B4217D /* MapView.swift */,
+			);
+			path = "Map Tab";
+			sourceTree = "<group>";
+		};
+		753D589729980A0800C132B2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7579064229810A16003D5155 = {
 			isa = PBXGroup;
 			children = (
@@ -113,6 +134,7 @@
 				7579065E29810A1E003D5155 /* Foodie PalTests */,
 				7579066829810A1F003D5155 /* Foodie PalUITests */,
 				7579064C29810A17003D5155 /* Products */,
+				753D589729980A0800C132B2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -138,6 +160,8 @@
 				7579065429810A1D003D5155 /* Preview Content */,
 				753D58882988020C00C132B2 /* UserSettings.swift */,
 				753D588E298CDEA800C132B2 /* MapModel.swift */,
+				753D5893298FE34800C132B2 /* SheetExtension.swift */,
+				753D5895298FFB8600C132B2 /* FoodTrucks.swift */,
 			);
 			path = "Foodie Pal";
 			sourceTree = "<group>";
@@ -170,8 +194,8 @@
 		75D2ECF0298416AD00B4217D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				753D5892298FE2DE00C132B2 /* Map Tab */,
 				753D588A298A344D00C132B2 /* Settings Tab */,
-				75D2ECF1298416F000B4217D /* MapView.swift */,
 				75D2ECF32984170600B4217D /* ListView.swift */,
 			);
 			path = Views;
@@ -198,6 +222,7 @@
 				7579067D2981252F003D5155 /* FirebaseFirestore */,
 				7579067F2981252F003D5155 /* FirebaseFirestoreSwift */,
 				757906812981252F003D5155 /* FirebaseFunctions */,
+				753D589A29980CA700C132B2 /* FirebaseStorage */,
 			);
 			productName = "Foodie Pal";
 			productReference = 7579064B29810A17003D5155 /* Foodie Pal.app */;
@@ -319,11 +344,13 @@
 			files = (
 				75D2ECF62984171500B4217D /* SettingsView.swift in Sources */,
 				753D588F298CDEA800C132B2 /* MapModel.swift in Sources */,
+				753D5896298FFB8700C132B2 /* FoodTrucks.swift in Sources */,
 				75D2ECF42984170600B4217D /* ListView.swift in Sources */,
 				7579065129810A17003D5155 /* ContentView.swift in Sources */,
 				75D2ECF2298416F000B4217D /* MapView.swift in Sources */,
 				753D58892988020C00C132B2 /* UserSettings.swift in Sources */,
 				753D588729854DE900C132B2 /* UserSettingsView.swift in Sources */,
+				753D5894298FE34900C132B2 /* SheetExtension.swift in Sources */,
 				753D588C298A349600C132B2 /* UserSettingsEditView.swift in Sources */,
 				7579064F29810A17003D5155 /* Foodie_PalApp.swift in Sources */,
 			);
@@ -659,6 +686,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		753D589A29980CA700C132B2 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7579067A2981252F003D5155 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		7579067B2981252F003D5155 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7579067A2981252F003D5155 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
