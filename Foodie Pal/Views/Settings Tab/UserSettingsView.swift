@@ -12,6 +12,7 @@ import FirebaseFirestore
 
 struct UserSettingsView: View {
     @State var userSettings = [UserSettings]()
+    @State var isLoggedOut = false
     var sendSetting = ["description", "email", "name", "address"]
     
     let db = Firestore.firestore()
@@ -39,12 +40,39 @@ struct UserSettingsView: View {
                     }
                     .navigationTitle("Hello, \(setting.name)")
                 }
+                Spacer()
+                Button(action: {
+                    logOut()
+                }) {
+                    Text("Logga ut")
+                        .foregroundColor(.white)
+                        .bold()
+                        .frame(width: 200,height: 40)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        
+                }
+                
             }
             .onAppear() {
                 listenToFirestore()
             }
+            .navigationDestination(isPresented: $isLoggedOut ) {
+                SettingsView().navigationBarBackButtonHidden(true)
+            }
     }
     
+    func logOut() {
+        do {
+            try Auth.auth().signOut()
+            isLoggedOut = true
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
+       
+        
+        
+    }
     
     func listenToFirestore() {
         guard let userUid = Auth.auth().currentUser?.uid else {return}

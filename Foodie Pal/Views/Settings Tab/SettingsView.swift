@@ -25,7 +25,7 @@ struct SettingsView: View {
                     .textFieldStyle(.roundedBorder)
                     .frame(width: 200)
                 
-                TextField("Lösenord", text: $password)
+                SecureField("Lösenord", text: $password)
                     .textFieldStyle(.roundedBorder)
                     .frame(width: 200)
                 
@@ -44,6 +44,7 @@ struct SettingsView: View {
                 
                 Button(action: {
                     //recover forgotten password
+                    
                 }) {
                     Text("Forgot your password?")
                         .bold()
