@@ -62,7 +62,7 @@ struct SettingsView: View {
             if error != nil {
                 print(error!.localizedDescription)
             }else {
-                print("login successful \(Auth.auth().currentUser?.uid)")
+               // print("login successful \(Auth.auth().currentUser?.uid)")
                 isLoggedIn = true
                 
             }
