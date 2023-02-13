@@ -51,16 +51,16 @@ struct MapView: View {
                             .scaleEffect(selectedMarker == location.id ? 1: 0.7)
                             .animation(.default, value: 1)
                             .onTapGesture {
-                                withAnimation {
+                                
                                     self.selectedMarker = location.id
                                     isSheetPresented = true
-                                }
+                                
                                 
                                 
                                 foodTruck.description = location.description
                                 foodTruck.name = location.title
                                 foodTruck.category = location.category
-                                foodTruck.address = location.address
+                                foodTruck.address = location.name
                                 
                             
                                 
