@@ -8,9 +8,10 @@
 import Foundation
 import FirebaseFirestoreSwift
 
+//används för UserSettingsView och UserSettingsEditView
 struct UserSettings: Identifiable {
     let id = UUID()
-    var description : String
+    var description : String 
     var email : String
     var name : String
     var address : String

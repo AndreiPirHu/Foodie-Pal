@@ -30,17 +30,17 @@ struct MapView: View {
     
     var body: some View {
             VStack {
-                TextField("Enter an address", text: $text)
-                    .textFieldStyle(.roundedBorder)
-                    .padding(.horizontal)
+               // TextField("Enter an address", text: $text)
+                //    .textFieldStyle(.roundedBorder)
+               //     .padding(.horizontal)
                 
                 
-                Button(action: {
-                    mapAPI.getLocation(address: text, delta: 0.1, title: "", email: "", description: "", category: "")
-                    
-                }){
-                    Text("Find address")
-                }
+               // Button(action: {
+                 //   mapAPI.getLocation(address: text, //delta: 0.1, title: "", email: "", description: "", //category: "")
+               //
+               // }){
+                //    Text("Find address")
+                //}
                 
                 Map(coordinateRegion: $mapAPI.region, annotationItems: mapAPI.locations) { location in
                     
@@ -61,6 +61,20 @@ struct MapView: View {
                                 foodTruck.name = location.title
                                 foodTruck.category = location.category
                                 foodTruck.address = location.name
+                                foodTruck.schedMonOpen = location.schedMonOpen
+                                foodTruck.schedMonClose = location.schedMonClose
+                                foodTruck.schedTueOpen = location.schedTueOpen
+                                foodTruck.schedTueClose = location.schedTueClose
+                                foodTruck.schedWedOpen = location.schedWedOpen
+                                foodTruck.schedWedClose = location.schedWedClose
+                                foodTruck.schedThuOpen = location.schedThuOpen
+                                foodTruck.schedThuClose = location.schedThuClose
+                                foodTruck.schedFriOpen = location.schedFriOpen
+                                foodTruck.schedFriClose = location.schedFriClose
+                                foodTruck.schedSatOpen = location.schedSatOpen
+                                foodTruck.schedSatClose = location.schedSatClose
+                                foodTruck.schedSunOpen = location.schedSunOpen
+                                foodTruck.schedSunClose = location.schedSunClose
                                 
                             
                                 
@@ -71,120 +85,7 @@ struct MapView: View {
                 
                     // scrollView makes the sheet show the top of the page even when only showing a small part of it
                     ScrollView(.vertical, showsIndicators: false) {
-                        VStack{
-                            Text(foodTruck.name ?? "")
-                                .font(.title)
-                                .bold()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            Text(foodTruck.category ?? "")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text("ÖPPETTIDER")
-                                        .font(.custom("", size: 14))
-                                        .padding(.top, 10)
-                                        .foregroundColor(.gray)
-                                    
-                                    Spacer()
-                                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                                }
-                                .onTapGesture {
-                                    self.isExpanded.toggle()
-                                }
-                                
-                                Divider()
-                                    .background(.gray)
-                                    .frame(width: 340)
-                                
-                                if isExpanded {
-                                    VStack{
-                                        HStack{
-                                            Text("Mån")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                            
-                                        }
-                                        HStack{
-                                            Text("Tis")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                        }
-                                        HStack{
-                                            Text("Ons")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                        }
-                                        HStack{
-                                            Text("Tors")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                        }
-                                        HStack{
-                                            Text("Fre")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                        }
-                                        HStack{
-                                            Text("Lör")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                        }
-                                        HStack{
-                                            Text("Sön")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                        }
-                                    }
-                                    
-                                }
-                                
-                                
-                                Text("ADRESS")
-                                    .font(.custom("", size: 14))
-                                    .padding(.top, 30)
-                                    .foregroundColor(.gray)
-                                Divider()
-                                    .background(.gray)
-                                    .frame(width: 340)
-                                
-                                
-                                Text(foodTruck.address ?? "")
-                                
-                                
-                                
-                                
-                                Text("BESKRIVNING")
-                                    .font(.custom("", size: 14))
-                                    .padding(.top, 30)
-                                    .bold()
-                                    .foregroundColor(.gray)
-                                Divider()
-                                    .background(.gray)
-                                    .frame(width: 340)
-                                
-                                Text(foodTruck.description ?? "")
-                                        
-                                   
-                                    
-                                        
-                            }
-                            
-                                //.frame(maxWidth: .infinity, alignment: .leading)
-                          
-                            Spacer()
-                        }
-                        .padding()
-                        .padding(.top, 15)
+                        FoodTruckSheetView(scheduleIsExpanded: isExpanded, foodTruckName: foodTruck.name ?? "", foodTruckCategory: foodTruck.category ?? "" , foodTruckAddress: foodTruck.address ?? "", foodTruckDescription: foodTruck.description ?? "", schedMonOpen: foodTruck.schedMonOpen ?? "", schedMonClose: foodTruck.schedMonClose ?? "", schedTueOpen: foodTruck.schedTueOpen ?? "", schedTueClose: foodTruck.schedTueClose ?? "", schedWedOpen: foodTruck.schedWedOpen ?? "", schedWedClose: foodTruck.schedWedClose ?? "", schedThuOpen: foodTruck.schedThuOpen ?? "", schedThuClose: foodTruck.schedThuClose ?? "", schedFriOpen: foodTruck.schedFriOpen ?? "", schedFriClose: foodTruck.schedFriClose ?? "", schedSatOpen: foodTruck.schedSatOpen ?? "", schedSatClose: foodTruck.schedSatClose ?? "", schedSunOpen: foodTruck.schedSunOpen ?? "", schedSunClose: foodTruck.schedSunClose ?? "")
                         
                         
                         
@@ -230,7 +131,7 @@ struct MapView: View {
                             let filteredAddress = setMarker.address.replacingOccurrences(of: "å", with: "a").replacingOccurrences(of: "ä", with: "a").replacingOccurrences(of: "ö", with: "o")
                             
                             // Creates a pin using the setMarker values taken from firestore
-                            mapAPI.getLocation(address: "\(filteredAddress) Stockholm", delta: 0.1, title: setMarker.title, email: setMarker.email, description: setMarker.description, category: setMarker.category)
+                            mapAPI.getLocation(address: "\(filteredAddress) Stockholm", delta: 0.1, title: setMarker.title, email: setMarker.email, description: setMarker.description, category: setMarker.category, schedMonOpen: setMarker.schedMonOpen, schedMonClose: setMarker.schedMonClose, schedTueOpen: setMarker.schedTueOpen, schedTueClose: setMarker.schedTueClose, schedWedOpen: setMarker.schedWedOpen, schedWedClose: setMarker.schedWedClose, schedThuOpen: setMarker.schedThuOpen, schedThuClose: setMarker.schedThuClose, schedFriOpen: setMarker.schedFriOpen, schedFriClose: setMarker.schedFriClose, schedSatOpen: setMarker.schedSatOpen, schedSatClose: setMarker.schedSatClose, schedSunOpen: setMarker.schedSunOpen, schedSunClose: setMarker.schedSunClose)
                             
                             
                             
@@ -255,5 +156,140 @@ struct MapView: View {
 struct MapView_Previews: PreviewProvider {
     static var previews: some View {
         MapView()
+    }
+}
+
+struct FoodTruckSheetView: View {
+    @State var scheduleIsExpanded: Bool
+    var foodTruckName: String
+    var foodTruckCategory: String
+    var foodTruckAddress: String
+    var foodTruckDescription: String
+    var schedMonOpen : String
+    var schedMonClose : String
+    
+    var schedTueOpen : String
+    var schedTueClose : String
+    
+    var schedWedOpen : String
+    var schedWedClose : String
+    
+    var schedThuOpen : String
+    var schedThuClose : String
+    
+    var schedFriOpen : String
+    var schedFriClose : String
+    
+    var schedSatOpen : String
+    var schedSatClose : String
+    
+    var schedSunOpen : String
+    var schedSunClose : String
+    
+    
+    var body: some View {
+        VStack{
+            Text(foodTruckName)
+                .font(.title)
+                .bold()
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Text(foodTruckCategory)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("ÖPPETTIDER")
+                        .font(.custom("", size: 14))
+                        .padding(.top, 10)
+                        .foregroundColor(.gray)
+                    
+                    Spacer()
+                    Image(systemName: scheduleIsExpanded ? "chevron.up" : "chevron.down")
+                }
+                .onTapGesture {
+                    self.scheduleIsExpanded.toggle()
+                }
+                
+                Divider()
+                    .background(.gray)
+                    .frame(width: 340)
+                
+                if scheduleIsExpanded {
+                    VStack{
+                        HorizontalScheduleView(weekday: "Mån", openingTime: schedMonOpen, closingTime: schedMonClose)
+                        HorizontalScheduleView(weekday: "Tis", openingTime: schedTueOpen, closingTime: schedTueClose)
+                        HorizontalScheduleView(weekday: "Ons", openingTime: schedWedOpen, closingTime: schedWedClose)
+                        HorizontalScheduleView(weekday: "Tors", openingTime: schedThuOpen, closingTime: schedThuClose)
+                        HorizontalScheduleView(weekday: "Fre", openingTime: schedFriOpen, closingTime: schedFriClose)
+                        HorizontalScheduleView(weekday: "Lör", openingTime: schedSatOpen, closingTime: schedSatClose)
+                        HorizontalScheduleView(weekday: "Sön", openingTime: schedSunOpen, closingTime: schedSunClose)
+                        
+                        
+                       
+                    }
+                    
+                }
+                
+                
+                Text("ADRESS")
+                    .font(.custom("", size: 14))
+                    .padding(.top, 30)
+                    .foregroundColor(.gray)
+                Divider()
+                    .background(.gray)
+                    .frame(width: 340)
+                
+                
+                Text(foodTruckAddress)
+                
+                
+                
+                
+                Text("BESKRIVNING")
+                    .font(.custom("", size: 14))
+                    .padding(.top, 30)
+                    .bold()
+                    .foregroundColor(.gray)
+                Divider()
+                    .background(.gray)
+                    .frame(width: 340)
+                
+                Text(foodTruckDescription)
+                
+                
+                
+                
+            }
+            
+            //.frame(maxWidth: .infinity, alignment: .leading)
+            
+            Spacer()
+        }
+        .padding()
+        .padding(.top, 15)
+    }
+}
+
+struct HorizontalScheduleView: View {
+    var weekday: String
+    var openingTime: String
+    var closingTime: String
+    
+    var body: some View {
+        HStack{
+            Text(weekday)
+                .padding(.top, 3)
+            Spacer()
+            if openingTime == "Stängt" || closingTime == "Stängt"  {
+                Text("Stängt")
+                    .foregroundColor(.red)
+            } else {
+                Text("\(openingTime)-\(closingTime)")
+            }
+            
+            
+        }
     }
 }

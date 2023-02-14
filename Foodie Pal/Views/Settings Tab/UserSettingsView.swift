@@ -77,7 +77,21 @@ struct UserSettingsView: View {
                     
                     
                 }
-
+                
+                Button(action: {
+                    //goto images page
+                }) {
+                    Text("Bildgalleri")
+                        .foregroundColor(.white)
+                        .bold()
+                        .frame(width: 200,height: 40)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color.green)
+                        )
+                        
+                        .padding(.bottom, 40)
+                }
                 
                 Button(action: {
                     logOut()
