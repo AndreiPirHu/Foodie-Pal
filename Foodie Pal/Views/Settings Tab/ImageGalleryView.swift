@@ -13,6 +13,10 @@ import Firebase
 struct ImageGalleryView: View {
     @State var isPickerShowing = false
     @State var selectedImage: UIImage?
+    //array of images from database
+    @State var retrievedImages = [UIImage]()
+    
+    let db = Firestore.firestore()
     
     var body: some View {
         VStack{
@@ -51,8 +55,29 @@ struct ImageGalleryView: View {
                 }
             }
             
+            Divider()
             
-        }.sheet(isPresented: $isPickerShowing, onDismiss: nil) {
+            HStack {
+                
+                //Loop through all the images retrieved and display them
+                ForEach(retrievedImages, id: \.self) { image in
+                    
+                    Image(uiImage: image)
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                    
+                }
+                
+                
+            }
+            
+            
+            
+            
+        }.onAppear{
+            retrieveImages()
+        }
+        .sheet(isPresented: $isPickerShowing, onDismiss: nil) {
             //Image picker
             ImagePicker(selectedImage: $selectedImage, isPickerShowing: $isPickerShowing)
         }
@@ -77,7 +102,8 @@ struct ImageGalleryView: View {
             return
         }
         //file path and name
-        let fileRef = storageRef.child("images/\(UUID().uuidString).jpg")
+        let path = "images/\(UUID().uuidString).jpg"
+        let fileRef = storageRef.child(path)
         
         //upload data
         //force unwrap imageData because data is already guarded
@@ -85,16 +111,83 @@ struct ImageGalleryView: View {
             
             //check for errors
             if error == nil && metadata != nil {
-                //save reference to file in firestore
-                let db = Firestore.firestore()
                 
+                //save reference to document in firestore
+                db.collection("images").document().setData(["url":path]) { error in
+                    
+                    // If there are no errors it displays the new image
+                    if error == nil {
+                        // add uploaded image to the list of images for display
+                        //this only adds the selected image to the array and not directly from firebase. More effective way
+                        DispatchQueue.main.async {
+                            
+                            self.retrievedImages.append(self.selectedImage!)
+                            
+                            //to make it retrieve images directly from firebase do this instead
+                            //self.retrieveImages()
+                        }
+                        
+                        
+                        
+                        
+                        
+                    }
+                }
+                
+            }
+        }
+    }
+    
+    func retrieveImages() {
+        
+        //Get data from database
+        db.collection("images").getDocuments { snapshot, error in
+            
+            if error == nil && snapshot != nil {
+                
+                var paths = [String]()
+                
+                //loops through all documents
+                for doc in snapshot!.documents {
+                    
+                    // extract file path and adds url to array
+                    paths.append(doc["url"] as! String)
+                }
+                
+                //Loop through each file path in paths array and fetch data from storage
+                for path in paths {
+                    
+                    //Get reference to storage
+                    let storageRef = Storage.storage().reference()
+                    
+                    //specify path
+                    let fileRef = storageRef.child(path)
+                    
+                    
+                    //Retrieve the data
+                    fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
+                        
+                        //check for errors
+                        //checks that data is not nil
+                        if error == nil && data != nil {
+                            
+                            //create UIImage and put it in image array for display
+                            if let image = UIImage(data: data!){
+                                
+                                DispatchQueue.main.async {
+                                    retrievedImages.append(image)
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         
         
+        // get image data in storage for each image in reference
+        
     }
-    
-    
     
 }
 
