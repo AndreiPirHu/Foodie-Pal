@@ -10,11 +10,25 @@ import FirebaseStorage
 import FirebaseFirestore
 import Firebase
 
+
+
+struct ImageData: Hashable {
+    let docID: String
+    let url: String
+    let image: UIImage
+}
+
+
+
 struct ImageGalleryView: View {
     @State var isPickerShowing = false
     @State var selectedImage: UIImage?
     //array of images from database
-    @State var retrievedImages = [UIImage]()
+    @State var downloadedImages = [(docID: String, url: String, image: UIImage)]()
+    @State var selectedGalleryImageDocID: String?
+    @State var selectedGalleryImagePath: String?
+    
+    
     
     let db = Firestore.firestore()
     
@@ -39,7 +53,7 @@ struct ImageGalleryView: View {
                         )
             }
             
-            //Upload button
+            //Upload button shown when image is selected
             if selectedImage != nil {
                 Button(action: {
                     
@@ -51,6 +65,7 @@ struct ImageGalleryView: View {
                         .frame(width: 200,height: 40)
                         .background(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color.green)
                             )
                 }
             }
@@ -59,23 +74,41 @@ struct ImageGalleryView: View {
             
             HStack {
                 
-                //Loop through all the images retrieved and display them
-                ForEach(retrievedImages, id: \.self) { image in
-                    
-                    Image(uiImage: image)
+               //Loops through all the images retrieved and displays them
+                let imageDataArray = downloadedImages.map { ImageData(docID: $0.docID, url: $0.url, image: $0.image) }
+                ForEach(imageDataArray, id :\.self) { image in
+                    Image(uiImage: image.image)
                         .resizable()
-                        .frame(width: 100, height: 100)
-                    
+                        .frame(width: 50, height: 50)
+                        .scaleEffect(selectedGalleryImageDocID == image.docID ? 1: 0.7)
+                        .onTapGesture{
+                            self.selectedGalleryImageDocID = image.docID
+                            self.selectedGalleryImagePath = image.url
+                        }
+                        .padding(.top, 10)
                 }
-                
-                
             }
             
-            
-            
-            
+            //Shows delete button if an image has been selected
+            if selectedGalleryImagePath != nil {
+                Button(action: {
+                    DeleteImage(selectedGalleryImagePath: selectedGalleryImagePath ?? "", selectedGalleryImageDocID: selectedGalleryImageDocID ?? "")
+                }) {
+                    Text("Radera vald bild")
+                        .foregroundColor(.white)
+                        .bold()
+                        .frame(width: 200,height: 40)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color.red)
+                        )
+                    
+                        .padding(.top, 40)
+                }
+            }
         }.onAppear{
             retrieveImages()
+            //downloadImages()
         }
         .sheet(isPresented: $isPickerShowing, onDismiss: nil) {
             //Image picker
@@ -102,7 +135,8 @@ struct ImageGalleryView: View {
             return
         }
         //file path and name
-        let path = "images/\(UUID().uuidString).jpg"
+        let docID = UUID().uuidString
+        let path = "images/\(docID).jpg"
         let fileRef = storageRef.child(path)
         
         //upload data
@@ -113,7 +147,7 @@ struct ImageGalleryView: View {
             if error == nil && metadata != nil {
                 
                 //save reference to document in firestore
-                db.collection("images").document().setData(["url":path]) { error in
+                db.collection("images").document(docID).setData(["url":path]) { error in
                     
                     // If there are no errors it displays the new image
                     if error == nil {
@@ -121,10 +155,14 @@ struct ImageGalleryView: View {
                         //this only adds the selected image to the array and not directly from firebase. More effective way
                         DispatchQueue.main.async {
                             
-                            self.retrievedImages.append(self.selectedImage!)
+                           // self.retrievedImages.append(self.selectedImage!)
                             
+                            downloadedImages.removeAll()
                             //to make it retrieve images directly from firebase do this instead
-                            //self.retrieveImages()
+                            self.retrieveImages()
+                            
+                            
+                           // self.downloadImages()
                         }
                         
                         
@@ -147,47 +185,85 @@ struct ImageGalleryView: View {
                 
                 var paths = [String]()
                 
+                
                 //loops through all documents
                 for doc in snapshot!.documents {
                     
                     // extract file path and adds url to array
                     paths.append(doc["url"] as! String)
-                }
-                
-                //Loop through each file path in paths array and fetch data from storage
-                for path in paths {
                     
-                    //Get reference to storage
-                    let storageRef = Storage.storage().reference()
+                   
                     
-                    //specify path
-                    let fileRef = storageRef.child(path)
+                    }
                     
-                    
-                    //Retrieve the data
-                    fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
+                    //Loop through each file path in paths array and fetch data from storage
+                    for path in paths {
                         
-                        //check for errors
-                        //checks that data is not nil
-                        if error == nil && data != nil {
+                        //Get reference to storage
+                        let storageRef = Storage.storage().reference()
+                        
+                        //specify path
+                        let fileRef = storageRef.child(path)
+                        
+                        
+                        //Retrieve the data
+                        fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
                             
-                            //create UIImage and put it in image array for display
-                            if let image = UIImage(data: data!){
+                            //check for errors
+                            //checks that data is not nil
+                            if error == nil && data != nil {
                                 
-                                DispatchQueue.main.async {
-                                    retrievedImages.append(image)
+                                //create UIImage and put it in image array for display
+                                if let image = UIImage(data: data!){
+                                    
+                                    //removes images/ and .jpg to give the correct docID
+                                    let docID = path.replacingOccurrences(of: "images/", with: "").replacingOccurrences(of: ".jpg", with: "")
+                                    
+                                    DispatchQueue.main.async {
+                                        
+                                        downloadedImages.append((docID, path, image))
+                                        
+                                    }
+                                    
                                 }
                             }
                         }
                     }
-                }
+              
             }
         }
-        
-        
-        // get image data in storage for each image in reference
-        
     }
+    
+   
+    //Deletes the selected image from storage and firestore
+    func DeleteImage(selectedGalleryImagePath: String, selectedGalleryImageDocID: String){
+        let storageRef = Storage.storage().reference()
+        
+        //specify path
+        let deleteRef = storageRef.child(selectedGalleryImagePath)
+        
+        deleteRef.delete { error in
+            if let error = error {
+                print("uh-oh, an error occurred while deleting")
+            }else{
+                //if successful deletes from firestore too
+                db.collection("images").document(selectedGalleryImageDocID).delete()
+                
+                downloadedImages.removeAll()
+                //reload images after removing
+                self.retrieveImages()
+                print("File was successfully deleted!")
+            }
+            
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
     
 }
 
