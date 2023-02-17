@@ -43,6 +43,7 @@ struct ImageGalleryView: View {
                         
                         Text("Use as header")
                         Image(systemName: isHeaderImage ? "checkmark.square" : "square")
+                            .foregroundColor(.black)
                     }
                    
                 }
