@@ -13,6 +13,7 @@ import FirebaseFirestore
 struct UserSettingsView: View {
     @State var userSettings = [UserSettings]()
     @State var isLoggedOut = false
+    @State var goToImageGallery = false
     
     @State var selectedTime = Date()
     
@@ -79,7 +80,7 @@ struct UserSettingsView: View {
                 }
                 
                 Button(action: {
-                    //goto images page
+                    goToImageGallery = true
                 }) {
                     Text("Bildgalleri")
                         .foregroundColor(.white)
@@ -115,6 +116,9 @@ struct UserSettingsView: View {
             }
             .navigationDestination(isPresented: $isLoggedOut ) {
                 SettingsView().navigationBarBackButtonHidden(true)
+            }
+            .navigationDestination(isPresented: $goToImageGallery ) {
+                ImageGalleryView()
             }
     }
     

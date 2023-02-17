@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import SwiftUI
 
 
-struct FoodTrucks: Codable{
+struct FoodTrucks: Codable, Hashable{
     var name: String?
     var email: String?
     var description: String?
@@ -36,5 +37,5 @@ struct FoodTrucks: Codable{
     var schedSunOpen : String?
     var schedSunClose : String?
     
-    
+    var uid = ""
 }
