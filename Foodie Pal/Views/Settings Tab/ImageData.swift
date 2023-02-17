@@ -8,8 +8,8 @@
 import Foundation
 import SwiftUI
 
-struct ImageData: Hashable {
-    
+struct ImageData: Hashable, Identifiable {
+    var id = UUID()
     let docID: String
     let url: String
     let image: UIImage

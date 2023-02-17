@@ -50,6 +50,8 @@ struct SetMarker: Codable, Identifiable {
     
     var schedSunOpen : String = ""
     var schedSunClose : String = ""
+    
+    var uid : String = ""
 }
 
 //används för att skapa pins på kartan
@@ -88,6 +90,8 @@ struct Location: Identifiable {
     var schedSunOpen : String = ""
     var schedSunClose : String = ""
     
+    var uid : String = ""
+    
 }
 
 class MapAPI: ObservableObject {
@@ -115,7 +119,7 @@ class MapAPI: ObservableObject {
         
     }
     
-    func getLocation (address: String, delta: Double, title: String, email: String, description: String, category: String, schedMonOpen: String, schedMonClose: String, schedTueOpen: String, schedTueClose: String, schedWedOpen: String, schedWedClose: String, schedThuOpen: String, schedThuClose: String, schedFriOpen: String, schedFriClose: String, schedSatOpen: String, schedSatClose: String, schedSunOpen: String, schedSunClose: String ) {
+    func getLocation (address: String, delta: Double, title: String, email: String, description: String, category: String, schedMonOpen: String, schedMonClose: String, schedTueOpen: String, schedTueClose: String, schedWedOpen: String, schedWedClose: String, schedThuOpen: String, schedThuClose: String, schedFriOpen: String, schedFriClose: String, schedSatOpen: String, schedSatClose: String, schedSunOpen: String, schedSunClose: String, uid: String ) {
         
         //removes all locations so that old locations are removed and only the new address shows
         locations.removeAll()
@@ -157,7 +161,7 @@ class MapAPI: ObservableObject {
                 
             
                 
-                let new_location = Location(name: name ?? "Pin", coordinate:  CLLocationCoordinate2D(latitude: lat, longitude: lon), title: title, email: email, description: description, category: category, address: address, schedMonOpen: schedMonOpen, schedMonClose: schedMonClose, schedTueOpen: schedTueOpen, schedTueClose: schedTueClose, schedWedOpen: schedWedOpen, schedWedClose: schedWedClose, schedThuOpen: schedThuOpen, schedThuClose: schedThuClose, schedFriOpen: schedFriOpen, schedFriClose: schedFriClose, schedSatOpen: schedSatOpen, schedSatClose: schedSatClose, schedSunOpen: schedSunOpen, schedSunClose: schedSunClose)
+                let new_location = Location(name: name ?? "Pin", coordinate:  CLLocationCoordinate2D(latitude: lat, longitude: lon), title: title, email: email, description: description, category: category, address: address, schedMonOpen: schedMonOpen, schedMonClose: schedMonClose, schedTueOpen: schedTueOpen, schedTueClose: schedTueClose, schedWedOpen: schedWedOpen, schedWedClose: schedWedClose, schedThuOpen: schedThuOpen, schedThuClose: schedThuClose, schedFriOpen: schedFriOpen, schedFriClose: schedFriClose, schedSatOpen: schedSatOpen, schedSatClose: schedSatClose, schedSunOpen: schedSunOpen, schedSunClose: schedSunClose, uid: uid)
                 self.locations.insert(new_location, at: 0)
                 
                 
