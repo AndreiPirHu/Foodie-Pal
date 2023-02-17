@@ -22,7 +22,7 @@ struct MapView: View {
     @State var foodTruck = FoodTrucks()
     
     @State var isSheetPresented = false
-    @State private var isExpanded: Bool = false
+    //@State private var isExpanded: Bool = false
     
     @State var downloadedImages = [ImageData]()
 
@@ -44,10 +44,18 @@ struct MapView: View {
                             .animation(.default, value: 1)
                             .onTapGesture {
                                 
-                                    self.selectedMarker = location.id
+                                //Gives the id of the current selected marker
+                                self.selectedMarker = location.id
+                                
+                                //Small delay when the sheet is already presented so that the view closes and opens again and resets the images that load onAppear
+                                if isSheetPresented == true {
+                                    isSheetPresented = false
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                                        isSheetPresented = true
+                                    }
+                                }else {
                                     isSheetPresented = true
-                                
-                                
+                                }
                                 
                                 foodTruck.description = location.description
                                 foodTruck.name = location.title
@@ -67,9 +75,12 @@ struct MapView: View {
                                 foodTruck.schedSatClose = location.schedSatClose
                                 foodTruck.schedSunOpen = location.schedSunOpen
                                 foodTruck.schedSunClose = location.schedSunClose
+                                foodTruck.uid = location.uid
                                 
+                                //loads correct images when a new food truck is selecte
                                 
-                                downloadImages(uid: location.uid)
+                                    //downloadImages(uid: location.uid)
+                                
                                 
                             }
                     }
@@ -78,19 +89,15 @@ struct MapView: View {
                 
                     // scrollView makes the sheet show the top of the page even when only showing a small part of it
                     ScrollView(.vertical, showsIndicators: false) {
-                        FoodTruckSheetView(scheduleIsExpanded: isExpanded, downloadedImages: downloadedImages, foodTruckName: foodTruck.name ?? "", foodTruckCategory: foodTruck.category ?? "" , foodTruckAddress: foodTruck.address ?? "", foodTruckDescription: foodTruck.description ?? "", schedMonOpen: foodTruck.schedMonOpen ?? "", schedMonClose: foodTruck.schedMonClose ?? "", schedTueOpen: foodTruck.schedTueOpen ?? "", schedTueClose: foodTruck.schedTueClose ?? "", schedWedOpen: foodTruck.schedWedOpen ?? "", schedWedClose: foodTruck.schedWedClose ?? "", schedThuOpen: foodTruck.schedThuOpen ?? "", schedThuClose: foodTruck.schedThuClose ?? "", schedFriOpen: foodTruck.schedFriOpen ?? "", schedFriClose: foodTruck.schedFriClose ?? "", schedSatOpen: foodTruck.schedSatOpen ?? "", schedSatClose: foodTruck.schedSatClose ?? "", schedSunOpen: foodTruck.schedSunOpen ?? "", schedSunClose: foodTruck.schedSunClose ?? "")
-                        
-                        
-                        
+                        FoodTruckSheetView(downloadedImages: downloadedImages, foodTruck: foodTruck)
                     }
-                    
-                    
-                    
-                    
-                    
-                    
+                    .onAppear{
+                        //downloads the images once the sheet has appeared so that extra clicks dont runt it several times
+                        downloadImages(uid: foodTruck.uid)
+                    }
                 }
-            onDismiss: {isSheetPresented = false}
+                onDismiss: {isSheetPresented = false}
+               
             }
             .onAppear() {
                 updateMarkersFirestore()
@@ -222,58 +229,78 @@ struct MapView_Previews: PreviewProvider {
     }
 }
 
+//View for the food truck information sheet
 struct FoodTruckSheetView: View {
-    @State var scheduleIsExpanded: Bool
+    @State var scheduleIsExpanded = false
+    @State var imageExpanderPresented = false
     var downloadedImages = [ImageData]()
-    var foodTruckName: String
-    var foodTruckCategory: String
-    var foodTruckAddress: String
-    var foodTruckDescription: String
-    var schedMonOpen : String
-    var schedMonClose : String
-    
-    var schedTueOpen : String
-    var schedTueClose : String
-    
-    var schedWedOpen : String
-    var schedWedClose : String
-    
-    var schedThuOpen : String
-    var schedThuClose : String
-    
-    var schedFriOpen : String
-    var schedFriClose : String
-    
-    var schedSatOpen : String
-    var schedSatClose : String
-    
-    var schedSunOpen : String
-    var schedSunClose : String
+    var foodTruck = FoodTrucks()
     
     var db = Firestore.firestore()
     
     
     var body: some View {
         VStack(alignment: .leading){
-            Text(foodTruckName)
+            Text(foodTruck.name)
                 .font(.title)
                 .bold()
-                //.frame(maxWidth: .infinity, alignment: .leading)
             
-            Text(foodTruckCategory)
-            //.frame(maxWidth: .infinity, alignment: .leading)
+            Text(foodTruck.category)
             
             ScrollView(.horizontal, showsIndicators: false) {
                 
                 HStack{
                     ForEach(downloadedImages) { image in
                         
-                        imageView(image: image.image)
+                        imagePreView(image: image.image)
                             .padding(3)
 
                     }
                 }
                 
+                //sheet for the expanded image view
+            }.sheet(isPresented: $imageExpanderPresented, onDismiss: {imageExpanderPresented = false}) {
+                VStack(alignment: .leading){
+                    
+                        HStack{
+                            Text("Bilder")
+                                .font(.title)
+                            Spacer()
+                            Button(action: {
+                                imageExpanderPresented = false
+                            }) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                    
+                    Text(foodTruck.name)
+                        .foregroundColor(.gray)
+                    
+                    Spacer()
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        
+                        HStack{
+                            ForEach(downloadedImages) { image in
+                                
+                                imageFullView(image: image.image)
+                                    .padding(3)
+
+                            }
+                        }
+                        
+                    }
+                    Spacer()
+                }
+                .padding(20)
+                
+            }
+            //ontap opens up the expanded image view
+            .onTapGesture {
+                imageExpanderPresented = true
             }
             
             
@@ -298,13 +325,13 @@ struct FoodTruckSheetView: View {
                 
                 if scheduleIsExpanded {
                     VStack{
-                        HorizontalScheduleView(weekday: "Mån", openingTime: schedMonOpen, closingTime: schedMonClose)
-                        HorizontalScheduleView(weekday: "Tis", openingTime: schedTueOpen, closingTime: schedTueClose)
-                        HorizontalScheduleView(weekday: "Ons", openingTime: schedWedOpen, closingTime: schedWedClose)
-                        HorizontalScheduleView(weekday: "Tors", openingTime: schedThuOpen, closingTime: schedThuClose)
-                        HorizontalScheduleView(weekday: "Fre", openingTime: schedFriOpen, closingTime: schedFriClose)
-                        HorizontalScheduleView(weekday: "Lör", openingTime: schedSatOpen, closingTime: schedSatClose)
-                        HorizontalScheduleView(weekday: "Sön", openingTime: schedSunOpen, closingTime: schedSunClose)
+                        HorizontalScheduleView(weekday: "Mån", openingTime: foodTruck.schedMonOpen, closingTime: foodTruck.schedMonClose)
+                        HorizontalScheduleView(weekday: "Tis", openingTime: foodTruck.schedTueOpen, closingTime: foodTruck.schedTueClose)
+                        HorizontalScheduleView(weekday: "Ons", openingTime: foodTruck.schedWedOpen, closingTime: foodTruck.schedWedClose)
+                        HorizontalScheduleView(weekday: "Tors", openingTime: foodTruck.schedThuOpen, closingTime: foodTruck.schedThuClose)
+                        HorizontalScheduleView(weekday: "Fre", openingTime: foodTruck.schedFriOpen, closingTime: foodTruck.schedFriClose)
+                        HorizontalScheduleView(weekday: "Lör", openingTime: foodTruck.schedSatOpen, closingTime: foodTruck.schedSatClose)
+                        HorizontalScheduleView(weekday: "Sön", openingTime: foodTruck.schedSunOpen, closingTime: foodTruck.schedSunClose)
                     }
                     
                 }
@@ -318,7 +345,7 @@ struct FoodTruckSheetView: View {
                     .background(.gray)
                     .frame(width: 340)
                 
-                Text(foodTruckAddress)
+                Text(foodTruck.address)
                 
                 Text("BESKRIVNING")
                     .font(.custom("", size: 14))
@@ -329,7 +356,7 @@ struct FoodTruckSheetView: View {
                     .background(.gray)
                     .frame(width: 340)
                 
-                Text(foodTruckDescription)
+                Text(foodTruck.description)
             }
             
             
@@ -342,7 +369,7 @@ struct FoodTruckSheetView: View {
         
         
 }
-
+//the view for the opening and closing hours when it is opened
 struct HorizontalScheduleView: View {
     var weekday: String
     var openingTime: String
@@ -364,8 +391,8 @@ struct HorizontalScheduleView: View {
         }
     }
 }
-
-struct imageView: View {
+//view for the images that are in the scrollView
+struct imagePreView: View {
     var image : UIImage
     
     var body : some View{
@@ -376,6 +403,39 @@ struct imageView: View {
                 .aspectRatio(contentMode: .fill)
             
         }.frame(width: 80, height: 100)
+            .cornerRadius(20)
+    }
+}
+
+//view for the images if they are clicked
+struct imageFullView: View {
+    @State private var scale: CGFloat = 1.0
+    var image : UIImage
+    
+    var body : some View{
+        
+        VStack{
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .scaleEffect(scale)
+            // allows the user to zoom in on the picture
+                .gesture(
+                MagnificationGesture()
+                    .onChanged{ value in
+                        scale = value.magnitude
+                    }
+                // resets the size of the picture if it is made too small and the zooming has stopped
+                    .onEnded{ value in
+                        if scale < 0.5 {
+                            scale = 1.0
+                        }
+                    }
+                
+                )
+                
+            
+        }.frame(width: 250, height: 400)
             .cornerRadius(20)
     }
 }
