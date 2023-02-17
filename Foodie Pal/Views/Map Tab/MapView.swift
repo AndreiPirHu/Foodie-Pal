@@ -30,17 +30,7 @@ struct MapView: View {
     
     var body: some View {
             VStack {
-               // TextField("Enter an address", text: $text)
-                //    .textFieldStyle(.roundedBorder)
-               //     .padding(.horizontal)
-                
-                
-               // Button(action: {
-                 //   mapAPI.getLocation(address: text, //delta: 0.1, title: "", email: "", description: "", //category: "")
-               //
-               // }){
-                //    Text("Find address")
-                //}
+               
                 
                 Map(coordinateRegion: $mapAPI.region, annotationItems: mapAPI.locations) { location in
                     
@@ -198,6 +188,9 @@ struct FoodTruckSheetView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             
+            
+            
+            
             VStack(alignment: .leading) {
                 HStack {
                     Text("ÖPPETTIDER")
@@ -225,27 +218,20 @@ struct FoodTruckSheetView: View {
                         HorizontalScheduleView(weekday: "Fre", openingTime: schedFriOpen, closingTime: schedFriClose)
                         HorizontalScheduleView(weekday: "Lör", openingTime: schedSatOpen, closingTime: schedSatClose)
                         HorizontalScheduleView(weekday: "Sön", openingTime: schedSunOpen, closingTime: schedSunClose)
-                        
-                        
-                       
                     }
                     
                 }
-                
                 
                 Text("ADRESS")
                     .font(.custom("", size: 14))
                     .padding(.top, 30)
                     .foregroundColor(.gray)
+                
                 Divider()
                     .background(.gray)
                     .frame(width: 340)
                 
-                
                 Text(foodTruckAddress)
-                
-                
-                
                 
                 Text("BESKRIVNING")
                     .font(.custom("", size: 14))
@@ -257,10 +243,6 @@ struct FoodTruckSheetView: View {
                     .frame(width: 340)
                 
                 Text(foodTruckDescription)
-                
-                
-                
-                
             }
             
             //.frame(maxWidth: .infinity, alignment: .leading)
@@ -291,5 +273,19 @@ struct HorizontalScheduleView: View {
             
             
         }
+    }
+}
+
+struct imageView: View {
+    var image : UIImage
+    
+    var body : some View{
+        
+        VStack{
+            Image(uiImage: image)
+            
+        }.frame(width: 80, height: 100)
+            .cornerRadius(20)
+            .shadow(radius: 20)
     }
 }

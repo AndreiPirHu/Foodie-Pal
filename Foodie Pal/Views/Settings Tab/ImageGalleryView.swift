@@ -9,24 +9,18 @@ import SwiftUI
 import FirebaseStorage
 import FirebaseFirestore
 import Firebase
+import FirebaseAuth
 
-
-
-struct ImageData: Hashable {
-    let docID: String
-    let url: String
-    let image: UIImage
-}
 
 
 
 struct ImageGalleryView: View {
     @State var isPickerShowing = false
     @State var selectedImage: UIImage?
-    //array of images from database
-    @State var downloadedImages = [(docID: String, url: String, image: UIImage)]()
+    @State var downloadedImages = [ImageData]()
     @State var selectedGalleryImageDocID: String?
     @State var selectedGalleryImagePath: String?
+    @State var isHeaderImage = false
     
     
     
@@ -34,13 +28,26 @@ struct ImageGalleryView: View {
     
     var body: some View {
         VStack{
-            
+            //If an image is selected it is shown
             if selectedImage != nil {
                 Image(uiImage: selectedImage!)
                     .resizable()
                     .frame(width: 200, height: 200)
+                
+                
+                //Toggle for user to set the selected image as headerimage when uploaded
+                Button(action: {
+                    isHeaderImage.toggle()
+                }) {
+                    HStack{
+                        
+                        Text("Use as header")
+                        Image(systemName: isHeaderImage ? "checkmark.square" : "square")
+                    }
+                   
+                }
             }
-            
+            //Button to toggle a sheet where user can select an image from library
             Button(action: {
                 isPickerShowing = true
             }) {
@@ -53,7 +60,7 @@ struct ImageGalleryView: View {
                         )
             }
             
-            //Upload button shown when image is selected
+            //Upload button shown when image is selected from library
             if selectedImage != nil {
                 Button(action: {
                     
@@ -74,22 +81,30 @@ struct ImageGalleryView: View {
             
             HStack {
                 
-               //Loops through all the images retrieved and displays them
-                let imageDataArray = downloadedImages.map { ImageData(docID: $0.docID, url: $0.url, image: $0.image) }
-                ForEach(imageDataArray, id :\.self) { image in
-                    Image(uiImage: image.image)
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .scaleEffect(selectedGalleryImageDocID == image.docID ? 1: 0.7)
-                        .onTapGesture{
-                            self.selectedGalleryImageDocID = image.docID
-                            self.selectedGalleryImagePath = image.url
-                        }
-                        .padding(.top, 10)
+               //Loops through all the images retrieved and displays them in a list to be selected and deleted
+                
+                List(downloadedImages, id :\.self) { image in
+                    HStack{
+                        Spacer()
+                        Image(uiImage: image.image)
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .scaleEffect(selectedGalleryImageDocID == image.docID ? 1: 0.7)
+                            .onTapGesture{
+                                self.selectedGalleryImageDocID = image.docID
+                                self.selectedGalleryImagePath = image.url
+                            }
+                            .padding(.top, 10)
+                        Spacer()
+                    }
+                    
+                    
                 }
+                .scrollContentBackground(.hidden)
             }
             
             //Shows delete button if an image has been selected
+            //deletes the selected image from storage and firestore
             if selectedGalleryImagePath != nil {
                 Button(action: {
                     DeleteImage(selectedGalleryImagePath: selectedGalleryImagePath ?? "", selectedGalleryImageDocID: selectedGalleryImageDocID ?? "")
@@ -104,11 +119,11 @@ struct ImageGalleryView: View {
                         )
                     
                         .padding(.top, 40)
+                        .padding(.bottom, 10)
                 }
             }
         }.onAppear{
             retrieveImages()
-            //downloadImages()
         }
         .sheet(isPresented: $isPickerShowing, onDismiss: nil) {
             //Image picker
@@ -118,12 +133,14 @@ struct ImageGalleryView: View {
         
     }
     
+    //Uploads image to storage and firestore
     func uploadImage() {
+        //make sure a user is logged in
+        guard let userUid = Auth.auth().currentUser?.uid else {return}
         
         //make sure an image is selected
-        guard selectedImage != nil else{
-            return
-        }
+        guard selectedImage != nil else{return}
+        
         // create storage reference
         let storageRef = Storage.storage().reference()
         
@@ -135,7 +152,7 @@ struct ImageGalleryView: View {
             return
         }
         //file path and name
-        let docID = UUID().uuidString
+        var docID = UUID().uuidString
         let path = "images/\(docID).jpg"
         let fileRef = storageRef.child(path)
         
@@ -146,53 +163,100 @@ struct ImageGalleryView: View {
             //check for errors
             if error == nil && metadata != nil {
                 
-                //save reference to document in firestore
-                db.collection("images").document(docID).setData(["url":path]) { error in
-                    
-                    // If there are no errors it displays the new image
-                    if error == nil {
-                        // add uploaded image to the list of images for display
-                        //this only adds the selected image to the array and not directly from firebase. More effective way
-                        DispatchQueue.main.async {
-                            
-                           // self.retrievedImages.append(self.selectedImage!)
-                            
-                            downloadedImages.removeAll()
-                            //to make it retrieve images directly from firebase do this instead
-                            self.retrieveImages()
-                            
-                            
-                           // self.downloadImages()
-                        }
-                        
-                        
-                        
-                        
-                        
-                    }
-                }
                 
+                //if the new image is used as a header it will have a header identifier in the database
+                if isHeaderImage == true{
+                    db.collection("users").document(userUid).collection("images").document("HeaderImage").getDocument { snapshot, error in
+                        if error == nil && snapshot != nil{
+                            let data = snapshot!.data()
+                            //finds the old headerimage and deletes it so that it does not stay in storage without reference
+                                    if let deletePath = data?["url"] as? String {
+                                        let storageRef = Storage.storage().reference()
+                                        
+                                        let deleteRef = storageRef.child(deletePath)
+                                        
+                                        deleteRef.delete { error in
+                                            
+                                            //if there was an error it means there was no previous header. Error should still run the code to add a new header
+                                            if let error = error {
+                                                print("there was an error deleting the header image or there was no previous header image")
+                                                
+                                                //Starts adding the new chosen header image
+                                                db.collection("users").document(userUid).collection("images").document("HeaderImage").setData(["url":path]) { error in
+                                                                   
+                                                                   // If there are no errors it displays the new image
+                                                                   if error == nil {
+                                                                       // add uploaded image to the list of images for display
+                                                                       DispatchQueue.main.async {
+                                                                           
+                                                                           //deletes and updates the list to show new header and delete old
+                                                                           downloadedImages.removeAll()
+                                                                           
+                                                                           self.retrieveImages()
+                                                                       }
+                                                                   }
+                                                               }
+                                            }else{
+                                                
+                                                //if there was a previous header no errors are detected and the new header gets added
+                                                db.collection("users").document(userUid).collection("images").document("HeaderImage").setData(["url":path]) { error in
+                                                                   
+                                                                   // If there are no errors it displays the new image
+                                                                   if error == nil {
+                                                                       // add uploaded image to the list of images for display
+                                                                       DispatchQueue.main.async {
+                                                                           
+                                                                           downloadedImages.removeAll()
+                                                                           //to make it retrieve images directly from firebase do this instead
+                                                                           self.retrieveImages()
+                                                                       }
+                                                                   }
+                                                               }
+                                            }
+                                            
+                                        }
+                                    }
+                        }
+                    }
+                    
+                    
+                    //end of isheader code
+                }else {
+                   //if the uploaded image is not a header, it uploads normally
+                    db.collection("users").document(userUid).collection("images").document(docID).setData(["url":path]) { error in
+                                       
+                                       // If there are no errors it displays the new image
+                                       if error == nil {
+                                           // add uploaded image to the list of images for display
+                                           DispatchQueue.main.async {
+                                               
+                                               downloadedImages.removeAll()
+                                               //to make it retrieve images directly from firebase do this instead
+                                               self.retrieveImages()
+                                           }
+                                       }
+                                   }
+                }
             }
         }
     }
     
+    
+    
+    
     func retrieveImages() {
-        
+        downloadedImages.removeAll()
+        guard let userUid = Auth.auth().currentUser?.uid else {return}
         //Get data from database
-        db.collection("images").getDocuments { snapshot, error in
+        db.collection("users").document(userUid).collection("images").getDocuments { snapshot, error in
             
             if error == nil && snapshot != nil {
                 
                 var paths = [String]()
-                
-                
                 //loops through all documents
                 for doc in snapshot!.documents {
-                    
                     // extract file path and adds url to array
                     paths.append(doc["url"] as! String)
-                    
-                   
                     
                     }
                     
@@ -204,7 +268,6 @@ struct ImageGalleryView: View {
                         
                         //specify path
                         let fileRef = storageRef.child(path)
-                        
                         
                         //Retrieve the data
                         fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
@@ -221,7 +284,9 @@ struct ImageGalleryView: View {
                                     
                                     DispatchQueue.main.async {
                                         
-                                        downloadedImages.append((docID, path, image))
+                                        let downloadedImage = ImageData(docID: docID, url: path, image: image)
+                                        
+                                        downloadedImages.append(downloadedImage)
                                         
                                     }
                                     
@@ -229,7 +294,6 @@ struct ImageGalleryView: View {
                             }
                         }
                     }
-              
             }
         }
     }
@@ -237,6 +301,8 @@ struct ImageGalleryView: View {
    
     //Deletes the selected image from storage and firestore
     func DeleteImage(selectedGalleryImagePath: String, selectedGalleryImageDocID: String){
+        guard let userUid = Auth.auth().currentUser?.uid else {return}
+        
         let storageRef = Storage.storage().reference()
         
         //specify path
@@ -246,8 +312,10 @@ struct ImageGalleryView: View {
             if let error = error {
                 print("uh-oh, an error occurred while deleting")
             }else{
+                
+                
                 //if successful deletes from firestore too
-                db.collection("images").document(selectedGalleryImageDocID).delete()
+                db.collection("users").document(userUid).collection("images").document(selectedGalleryImageDocID).delete()
                 
                 downloadedImages.removeAll()
                 //reload images after removing
