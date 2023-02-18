@@ -24,7 +24,7 @@ struct ListView: View {
                         .font(.custom("Avenir-Heavy", size: 40))
                         .fontWeight(.heavy)
                         .padding(.horizontal, 45)
-                        .offset(y: 30)
+                        .offset(y: 35)
                         
                     List(foodTrucks, id :\.self) { foodTruck in
                         

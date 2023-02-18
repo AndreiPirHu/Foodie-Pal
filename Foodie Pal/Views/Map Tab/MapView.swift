@@ -242,25 +242,7 @@ struct FoodTruckSheetView: View {
             
             Text(foodTruck.category)
             
-            ScrollView(.horizontal, showsIndicators: false) {
-                
-                HStack{
-                    ForEach(downloadedImages) { image in
-                        
-                        imagePreView(image: image.image)
-                            .padding(3)
-
-                    }
-                }
-                
-                //sheet for the expanded image view
-            }.sheet(isPresented: $imageExpanderPresented, onDismiss: {imageExpanderPresented = false}) {
-                ExpandedImageGallerySheetView(imageExpanderPresented: $imageExpanderPresented, foodTruckName: foodTruck.name, downloadedImages: downloadedImages)
-            }// end of sheet for image gallery expander
-            //ontap opens up the expanded image view
-            .onTapGesture {
-                imageExpanderPresented = true
-            }
+            
             
             VStack(alignment: .leading) {
                 HStack {
@@ -303,6 +285,28 @@ struct FoodTruckSheetView: View {
                     .frame(width: 340)
                 
                 Text(foodTruck.address)
+                    .padding(.bottom, 20)
+                
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    
+                    HStack{
+                        ForEach(downloadedImages) { image in
+                            
+                            imagePreView(image: image.image)
+                                .padding(-1)
+
+                        }
+                    }
+                    
+                    //sheet for the expanded image view
+                }.sheet(isPresented: $imageExpanderPresented, onDismiss: {imageExpanderPresented = false}) {
+                    ExpandedImageGallerySheetView(imageExpanderPresented: $imageExpanderPresented, foodTruckName: foodTruck.name, downloadedImages: downloadedImages)
+                }// end of sheet for image gallery expander
+                //ontap opens up the expanded image view
+                .onTapGesture {
+                    imageExpanderPresented = true
+                }
                 
                 Text("BESKRIVNING")
                     .font(.custom("", size: 14))
@@ -348,7 +352,7 @@ struct HorizontalScheduleView: View {
         }
     }
 }
-//view for the images that are in the scrollView
+//view for the small images that are in the scrollView
 struct imagePreView: View {
     var image : UIImage
     
@@ -359,44 +363,13 @@ struct imagePreView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
             
-        }.frame(width: 80, height: 100)
-            .cornerRadius(20)
+        }.frame(width: 110, height: 150)
+            .cornerRadius(5)
     }
 }
 
-//view for the images if they are clicked
-struct imageFullView: View {
-    @State private var scale: CGFloat = 1.0
-    var image : UIImage
-    
-    var body : some View{
-        
-        VStack{
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .scaleEffect(scale)
-            // allows the user to zoom in on the picture
-                .gesture(
-                MagnificationGesture()
-                    .onChanged{ value in
-                        scale = value.magnitude
-                    }
-                // resets the size of the picture if it is made too small and the zooming has stopped
-                    .onEnded{ value in
-                        if scale < 0.5 {
-                            scale = 1.0
-                        }
-                    }
-                
-                )
-                
-            
-        }.frame(width: 250, height: 400)
-            .cornerRadius(20)
-    }
-}
 
+//view for the image gallery in the sheet that opens if the preview is clicked
 struct ExpandedImageGallerySheetView: View {
     @Binding var imageExpanderPresented: Bool
     var foodTruckName: String
@@ -435,5 +408,39 @@ struct ExpandedImageGallerySheetView: View {
             Spacer()
         }
         .padding(20)
+    }
+}
+
+
+//view for the big images in the image gallery if they are clicked
+struct imageFullView: View {
+    @State private var scale: CGFloat = 1.0
+    var image : UIImage
+    
+    var body : some View{
+        
+        VStack{
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .scaleEffect(scale)
+            // allows the user to zoom in on the picture
+                .gesture(
+                MagnificationGesture()
+                    .onChanged{ value in
+                        scale = value.magnitude
+                    }
+                // resets the size of the picture if it is made too small and the zooming has stopped
+                    .onEnded{ value in
+                        if scale < 0.5 {
+                            scale = 1.0
+                        }
+                    }
+                
+                )
+                
+            
+        }.frame(width: 250, height: 400)
+            .cornerRadius(20)
     }
 }

@@ -14,31 +14,21 @@ struct UserSettingsView: View {
     @State var userSettings = [UserSettings]()
     @State var isLoggedOut = false
     @State var goToImageGallery = false
+    @State var goToMessages = false
     
     @State var selectedTime = Date()
     
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
     var sendSetting = ["description", "email", "name", "address"]
-    
     
     let db = Firestore.firestore()
     
     var body: some View {
         
+       // ScrollView{
             VStack{
                 ForEach(userSettings) { setting in
                     
                     Text("Hello, \(setting.name)")
-                        //.padding(.bottom, 10)
                         .padding(.top, 30)
                         .font(.title)
                     
@@ -88,9 +78,24 @@ struct UserSettingsView: View {
                         .frame(width: 200,height: 40)
                         .background(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(Color.green)
+                                .fill(Color.blue)
                         )
-                        
+                    
+                        .padding(.bottom, 5)
+                }
+                
+                Button(action: {
+                    goToMessages = true
+                }) {
+                    Text("Meddelanden")
+                        .foregroundColor(.white)
+                        .bold()
+                        .frame(width: 200,height: 40)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color.blue)
+                        )
+                    
                         .padding(.bottom, 40)
                 }
                 
@@ -105,7 +110,7 @@ struct UserSettingsView: View {
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 .fill(Color.red)
                         )
-                        
+                    
                         .padding(.bottom, 40)
                 }
                 
@@ -120,6 +125,11 @@ struct UserSettingsView: View {
             .navigationDestination(isPresented: $goToImageGallery ) {
                 ImageGalleryView()
             }
+            .navigationDestination(isPresented: $goToMessages ) {
+                MessagesView()
+            }
+       // }
+        
     }
     
     
