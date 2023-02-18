@@ -16,17 +16,16 @@ struct ListView: View {
     let db = Firestore.firestore()
     
     var body: some View {
-        VStack(alignment: .leading){
+        VStack(){
             
-                
-                
             NavigationView{
-                VStack{
+                VStack(alignment: .leading){
                     Text("Food Trucks")
                         .font(.custom("Avenir-Heavy", size: 40))
                         .fontWeight(.heavy)
-                        .padding(.horizontal)
-                        .offset(y: 40)
+                        .padding(.horizontal, 45)
+                        .offset(y: 30)
+                        
                     List(foodTrucks, id :\.self) { foodTruck in
                         
                         NavigationLink(destination: FoodTruckInfoView(foodTruckUid: foodTruck.uid ?? "") ) {
