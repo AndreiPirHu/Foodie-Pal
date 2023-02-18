@@ -16,46 +16,28 @@ struct ListView: View {
     let db = Firestore.firestore()
     
     var body: some View {
-        VStack{
+        VStack(alignment: .leading){
             
-
-            
-            List(foodTrucks, id :\.self) { foodTruck in
-                HStack{
-                    if let image = foodTruck.image {
-                        Image(uiImage: image)
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                    }else{
-                        Text("Image did not load")
-                    }
-                    VStack{
-                        HStack{
-                            
-                           
-                            Text(foodTruck.name ?? "")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .bold()
-                                .font(.title3)
-                            
-                            
-                            
+                
+                
+            NavigationView{
+                VStack{
+                    Text("Food Trucks")
+                        .font(.custom("Avenir-Heavy", size: 40))
+                        .fontWeight(.heavy)
+                        .padding(.horizontal)
+                        .offset(y: 40)
+                    List(foodTrucks, id :\.self) { foodTruck in
+                        
+                        NavigationLink(destination: FoodTruckInfoView(foodTruckUid: foodTruck.uid ?? "") ) {
+                            FoodTruckRowView(foodTruck: foodTruck)
                         }
-                        Text(foodTruck.category ?? "")
-                            
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                           
-                        Divider()
-                        Text((foodTruck.description?.prefix(50) ?? "") + "...")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.top, 5)
-                    }
+                        
+                        
+                    }.scrollContentBackground(.hidden)
+                        .frame(width: 450)
                 }
-                
-                
-                
-                    }
-            
+            }
         }
         .onAppear{
             updateListFromFirestore()
@@ -83,7 +65,7 @@ struct ListView: View {
                             downloadHeaderImage(for: foodTruckTemp)
                         
                         
-                        //downloadHeaderImage(foodTruckUid: foodTruckTemp.uid ?? "", foodTruckName: foodTruckTemp.name ?? "", foodTruckDescription: foodTruckTemp.description ?? "", foodTruckCategory: foodTruckTemp.category ?? "")
+                        
                         
                     case .failure(let error) :
                         print("Error decoding item: \(error)")
@@ -159,5 +141,49 @@ struct ListView: View {
 struct ListView_Previews: PreviewProvider {
     static var previews: some View {
         ListView()
+    }
+}
+
+struct FoodTruckRowView: View {
+    var foodTruck = FoodTrucksList(name: "", category: "", description: "", uid: "", image: UIImage(systemName:"square.3.layers.3d.down.right.slash"))
+    
+    var body: some View {
+        
+        VStack(alignment: .leading){
+            HStack{
+                if let image = foodTruck.image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .frame(width: 125, height: 100)
+                        .cornerRadius(10)
+                        .aspectRatio(contentMode: .fill)
+                }else{
+                    //if there are problmes loading the image a sfsymbol is shown instead
+                    Image(systemName: "square.3.layers.3d.down.right.slash")
+                        .resizable()
+                        .frame(width: 125, height: 100)
+                        .cornerRadius(10)
+                        .aspectRatio(contentMode: .fill)
+                }
+                
+                VStack(alignment: .leading){
+                    HStack{
+                        Text(foodTruck.name ?? "")
+                            .fontWeight(.medium)
+                            .font(.title3)
+                    }
+                    Text(foodTruck.category ?? "")
+                        .foregroundColor(.gray)
+                        .font(.custom("", size: 15))
+                    
+                    Text((foodTruck.description?.prefix(50) ?? "") + "...")
+                        .padding(.top, 5)
+                    
+                }
+                
+            }
+            
+        }
+        .padding(.bottom, 10)
     }
 }

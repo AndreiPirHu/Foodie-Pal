@@ -171,52 +171,52 @@ struct ImageGalleryView: View {
                         if error == nil && snapshot != nil{
                             let data = snapshot!.data()
                             //finds the old headerimage and deletes it so that it does not stay in storage without reference
-                                    if let deletePath = data?["url"] as? String {
-                                        let storageRef = Storage.storage().reference()
+                            if let deletePath = data?["url"] as? String {
+                                let storageRef = Storage.storage().reference()
+                                
+                                let deleteRef = storageRef.child(deletePath)
+                                
+                                deleteRef.delete { error in
+                                    
+                                    //if there was an error it means there was no previous header. Error should still run the code to add a new header
+                                    if let error = error {
+                                        print("there was an error deleting the header image or there was no previous header image")
                                         
-                                        let deleteRef = storageRef.child(deletePath)
-                                        
-                                        deleteRef.delete { error in
+                                        //Starts adding the new chosen header image
+                                        db.collection("users").document(userUid).collection("images").document("HeaderImage").setData(["url":path]) { error in
                                             
-                                            //if there was an error it means there was no previous header. Error should still run the code to add a new header
-                                            if let error = error {
-                                                print("there was an error deleting the header image or there was no previous header image")
-                                                
-                                                //Starts adding the new chosen header image
-                                                db.collection("users").document(userUid).collection("images").document("HeaderImage").setData(["url":path]) { error in
-                                                                   
-                                                                   // If there are no errors it displays the new image
-                                                                   if error == nil {
-                                                                       // add uploaded image to the list of images for display
-                                                                       DispatchQueue.main.async {
-                                                                           
-                                                                           //deletes and updates the list to show new header and delete old
-                                                                           downloadedImages.removeAll()
-                                                                           
-                                                                           self.retrieveImages()
-                                                                       }
-                                                                   }
-                                                               }
-                                            }else{
-                                                
-                                                //if there was a previous header no errors are detected and the new header gets added
-                                                db.collection("users").document(userUid).collection("images").document("HeaderImage").setData(["url":path]) { error in
-                                                                   
-                                                                   // If there are no errors it displays the new image
-                                                                   if error == nil {
-                                                                       // add uploaded image to the list of images for display
-                                                                       DispatchQueue.main.async {
-                                                                           
-                                                                           downloadedImages.removeAll()
-                                                                           //to make it retrieve images directly from firebase do this instead
-                                                                           self.retrieveImages()
-                                                                       }
-                                                                   }
-                                                               }
+                                            // If there are no errors it displays the new image
+                                            if error == nil {
+                                                // add uploaded image to the list of images for display
+                                                DispatchQueue.main.async {
+                                                    
+                                                    //deletes and updates the list to show new header and delete old
+                                                    downloadedImages.removeAll()
+                                                    
+                                                    self.retrieveImages()
+                                                }
                                             }
+                                        }
+                                    }else{
+                                        
+                                        //if there was a previous header no errors are detected and the new header gets added
+                                        db.collection("users").document(userUid).collection("images").document("HeaderImage").setData(["url":path]) { error in
                                             
+                                            // If there are no errors it displays the new image
+                                            if error == nil {
+                                                // add uploaded image to the list of images for display
+                                                DispatchQueue.main.async {
+                                                    
+                                                    downloadedImages.removeAll()
+                                                    //to make it retrieve images directly from firebase do this instead
+                                                    self.retrieveImages()
+                                                }
+                                            }
                                         }
                                     }
+                                    
+                                }
+                            }
                         }
                     }
                     

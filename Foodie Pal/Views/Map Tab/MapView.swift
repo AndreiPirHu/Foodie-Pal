@@ -33,9 +33,10 @@ struct MapView: View {
     var body: some View {
             VStack {
                
-                
+                //Map centered on stockholm
                 Map(coordinateRegion: $mapAPI.region, annotationItems: mapAPI.locations) { location in
                     
+                    //Clickable map annotations with foodtruck information
                     MapAnnotation(coordinate: location.coordinate, anchorPoint: CGPoint(x: 0.5, y: 1)){
                         Image("Map Marker")
                             .resizable()
@@ -76,15 +77,9 @@ struct MapView: View {
                                 foodTruck.schedSunOpen = location.schedSunOpen
                                 foodTruck.schedSunClose = location.schedSunClose
                                 foodTruck.uid = location.uid
-                                
-                                //loads correct images when a new food truck is selecte
-                                
-                                    //downloadImages(uid: location.uid)
-                                
-                                
                             }
                     }
-                }
+                }// food truck information sheet that appears when a map annotation is clicked
                 .bottomSheet(presentationDetents: [.height(300),.large], isPresented: $isSheetPresented, sheetCornerRadius: 20) {
                 
                     // scrollView makes the sheet show the top of the page even when only showing a small part of it
@@ -105,7 +100,7 @@ struct MapView: View {
                 
             }
     }
-    
+    //loads all the markers from firestore
     func updateMarkersFirestore() {
         
         db.collection("users").addSnapshotListener { snapshot, err in
@@ -260,50 +255,12 @@ struct FoodTruckSheetView: View {
                 
                 //sheet for the expanded image view
             }.sheet(isPresented: $imageExpanderPresented, onDismiss: {imageExpanderPresented = false}) {
-                VStack(alignment: .leading){
-                    
-                        HStack{
-                            Text("Bilder")
-                                .font(.title)
-                            Spacer()
-                            Button(action: {
-                                imageExpanderPresented = false
-                            }) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .resizable()
-                                    .frame(width: 30, height: 30)
-                                    .foregroundColor(.gray)
-                            }
-                        }
-                    
-                    Text(foodTruck.name)
-                        .foregroundColor(.gray)
-                    
-                    Spacer()
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        
-                        HStack{
-                            ForEach(downloadedImages) { image in
-                                
-                                imageFullView(image: image.image)
-                                    .padding(3)
-
-                            }
-                        }
-                        
-                    }
-                    Spacer()
-                }
-                .padding(20)
-                
-            }
+                ExpandedImageGallerySheetView(imageExpanderPresented: $imageExpanderPresented, foodTruckName: foodTruck.name, downloadedImages: downloadedImages)
+            }// end of sheet for image gallery expander
             //ontap opens up the expanded image view
             .onTapGesture {
                 imageExpanderPresented = true
             }
-            
-            
             
             VStack(alignment: .leading) {
                 HStack {
@@ -437,5 +394,46 @@ struct imageFullView: View {
             
         }.frame(width: 250, height: 400)
             .cornerRadius(20)
+    }
+}
+
+struct ExpandedImageGallerySheetView: View {
+    @Binding var imageExpanderPresented: Bool
+    var foodTruckName: String
+    var downloadedImages = [ImageData]()
+    
+    var body: some View {
+        VStack(alignment: .leading){
+            HStack{
+                Text("Bilder")
+                    .font(.title)
+                Spacer()
+                Button(action: {
+                    imageExpanderPresented = false
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.gray)
+                }
+            }
+            
+            Text(foodTruckName)
+                .foregroundColor(.gray)
+            
+            Spacer()
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                
+                HStack{
+                    ForEach(downloadedImages) { image in
+                        imageFullView(image: image.image)
+                            .padding(3)
+                    }
+                }
+            }
+            Spacer()
+        }
+        .padding(20)
     }
 }
