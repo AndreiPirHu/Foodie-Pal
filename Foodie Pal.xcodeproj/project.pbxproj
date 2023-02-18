@@ -19,6 +19,7 @@
 		753D58A1299BBD6C00C132B2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58A0299BBD6C00C132B2 /* ImagePicker.swift */; };
 		753D58AB299D249B00C132B2 /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58AA299D249B00C132B2 /* ImageData.swift */; };
 		753D58AE299E2F6200C132B2 /* FoodTrucksList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58AD299E2F6100C132B2 /* FoodTrucksList.swift */; };
+		753D58B029A0F78300C132B2 /* FoodTruckInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58AF29A0F78300C132B2 /* FoodTruckInfoView.swift */; };
 		7579064F29810A17003D5155 /* Foodie_PalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579064E29810A17003D5155 /* Foodie_PalApp.swift */; };
 		7579065129810A17003D5155 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579065029810A17003D5155 /* ContentView.swift */; };
 		7579065329810A1D003D5155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7579065229810A1D003D5155 /* Assets.xcassets */; };
@@ -65,6 +66,7 @@
 		753D58A0299BBD6C00C132B2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		753D58AA299D249B00C132B2 /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
 		753D58AD299E2F6100C132B2 /* FoodTrucksList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTrucksList.swift; sourceTree = "<group>"; };
+		753D58AF29A0F78300C132B2 /* FoodTruckInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckInfoView.swift; sourceTree = "<group>"; };
 		7579064B29810A17003D5155 /* Foodie Pal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Foodie Pal.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7579064E29810A17003D5155 /* Foodie_PalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalApp.swift; sourceTree = "<group>"; };
 		7579065029810A17003D5155 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				75D2ECF32984170600B4217D /* ListView.swift */,
+				753D58AF29A0F78300C132B2 /* FoodTruckInfoView.swift */,
 				753D58AD299E2F6100C132B2 /* FoodTrucksList.swift */,
 			);
 			path = "List Tab";
@@ -372,6 +375,7 @@
 				7579065129810A17003D5155 /* ContentView.swift in Sources */,
 				75D2ECF2298416F000B4217D /* MapView.swift in Sources */,
 				753D58892988020C00C132B2 /* UserSettings.swift in Sources */,
+				753D58B029A0F78300C132B2 /* FoodTruckInfoView.swift in Sources */,
 				753D588729854DE900C132B2 /* UserSettingsView.swift in Sources */,
 				753D5894298FE34900C132B2 /* SheetExtension.swift in Sources */,
 				753D588C298A349600C132B2 /* UserSettingsEditView.swift in Sources */,
