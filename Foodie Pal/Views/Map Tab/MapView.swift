@@ -228,6 +228,7 @@ struct MapView_Previews: PreviewProvider {
 struct FoodTruckSheetView: View {
     @State var scheduleIsExpanded = false
     @State var imageExpanderPresented = false
+    @State var userMessages = [UserMessages]()
     var downloadedImages = [ImageData]()
     var foodTruck = FoodTrucks()
     
@@ -242,25 +243,7 @@ struct FoodTruckSheetView: View {
             
             Text(foodTruck.category)
             
-            ScrollView(.horizontal, showsIndicators: false) {
-                
-                HStack{
-                    ForEach(downloadedImages) { image in
-                        
-                        imagePreView(image: image.image)
-                            .padding(3)
-
-                    }
-                }
-                
-                //sheet for the expanded image view
-            }.sheet(isPresented: $imageExpanderPresented, onDismiss: {imageExpanderPresented = false}) {
-                ExpandedImageGallerySheetView(imageExpanderPresented: $imageExpanderPresented, foodTruckName: foodTruck.name, downloadedImages: downloadedImages)
-            }// end of sheet for image gallery expander
-            //ontap opens up the expanded image view
-            .onTapGesture {
-                imageExpanderPresented = true
-            }
+            
             
             VStack(alignment: .leading) {
                 HStack {
@@ -303,6 +286,28 @@ struct FoodTruckSheetView: View {
                     .frame(width: 340)
                 
                 Text(foodTruck.address)
+                    .padding(.bottom, 20)
+                
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    
+                    HStack{
+                        ForEach(downloadedImages) { image in
+                            
+                            imagePreView(image: image.image)
+                                .padding(-1)
+
+                        }
+                    }
+                    
+                    //sheet for the expanded image view
+                }.sheet(isPresented: $imageExpanderPresented, onDismiss: {imageExpanderPresented = false}) {
+                    ExpandedImageGallerySheetView(imageExpanderPresented: $imageExpanderPresented, foodTruckName: foodTruck.name, downloadedImages: downloadedImages)
+                }// end of sheet for image gallery expander
+                //ontap opens up the expanded image view
+                .onTapGesture {
+                    imageExpanderPresented = true
+                }
                 
                 Text("BESKRIVNING")
                     .font(.custom("", size: 14))
@@ -314,16 +319,66 @@ struct FoodTruckSheetView: View {
                     .frame(width: 340)
                 
                 Text(foodTruck.description)
+                
+                
+                
             }
+            Text("SENASTE NYTT")
+                .font(.custom("", size: 14))
+                .padding(.top, 30)
+                .bold()
+                .foregroundColor(.gray)
+            Divider()
+            ScrollView{
+                    ForEach(userMessages, id :\.self) { message in
+                        UserMessageAndDateView(message: message.message ?? "", date: message.date ?? "")
+                    }
+            }
+            .frame(height: 200)
             
             
             
-            Spacer()
+        }.onAppear{
+            userMessages.removeAll()
+           updateMessagesFromFirestore()
         }
         .padding()
         .padding(.top, 15)
     }
         
+    func updateMessagesFromFirestore() {
+        //gets userUid from logged in user
+        
+        db.collection("users").document(foodTruck.uid).collection("messages").addSnapshotListener { snapshot, err in
+
+            
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting documents \(err)")
+            } else {
+                //clears messages before loading them again
+                userMessages.removeAll()
+                for document in snapshot.documents {
+                    
+                    let result = Result {
+                        try document.data(as: UserMessages.self)
+                    }
+                    switch result {
+                    case .success(let userMessage) :
+                        
+                        userMessages.append(userMessage)
+                        
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+                //sort messages by messagePosition
+                userMessages.sort(by: { $0.messagePosition ?? 0 > $1.messagePosition ?? 0 })
+            }
+        }
+    }
+    
         
 }
 //the view for the opening and closing hours when it is opened
@@ -348,7 +403,7 @@ struct HorizontalScheduleView: View {
         }
     }
 }
-//view for the images that are in the scrollView
+//view for the small images that are in the scrollView
 struct imagePreView: View {
     var image : UIImage
     
@@ -359,44 +414,13 @@ struct imagePreView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
             
-        }.frame(width: 80, height: 100)
-            .cornerRadius(20)
+        }.frame(width: 110, height: 150)
+            .cornerRadius(5)
     }
 }
 
-//view for the images if they are clicked
-struct imageFullView: View {
-    @State private var scale: CGFloat = 1.0
-    var image : UIImage
-    
-    var body : some View{
-        
-        VStack{
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .scaleEffect(scale)
-            // allows the user to zoom in on the picture
-                .gesture(
-                MagnificationGesture()
-                    .onChanged{ value in
-                        scale = value.magnitude
-                    }
-                // resets the size of the picture if it is made too small and the zooming has stopped
-                    .onEnded{ value in
-                        if scale < 0.5 {
-                            scale = 1.0
-                        }
-                    }
-                
-                )
-                
-            
-        }.frame(width: 250, height: 400)
-            .cornerRadius(20)
-    }
-}
 
+//view for the image gallery in the sheet that opens if the preview is clicked
 struct ExpandedImageGallerySheetView: View {
     @Binding var imageExpanderPresented: Bool
     var foodTruckName: String
@@ -435,5 +459,39 @@ struct ExpandedImageGallerySheetView: View {
             Spacer()
         }
         .padding(20)
+    }
+}
+
+
+//view for the big images in the image gallery if they are clicked
+struct imageFullView: View {
+    @State private var scale: CGFloat = 1.0
+    var image : UIImage
+    
+    var body : some View{
+        
+        VStack{
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .scaleEffect(scale)
+            // allows the user to zoom in on the picture
+                .gesture(
+                MagnificationGesture()
+                    .onChanged{ value in
+                        scale = value.magnitude
+                    }
+                // resets the size of the picture if it is made too small and the zooming has stopped
+                    .onEnded{ value in
+                        if scale < 0.5 {
+                            scale = 1.0
+                        }
+                    }
+                
+                )
+                
+            
+        }.frame(width: 250, height: 400)
+            .cornerRadius(20)
     }
 }
