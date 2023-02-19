@@ -41,7 +41,7 @@ struct ImageGalleryView: View {
                 }) {
                     HStack{
                         
-                        Text("Use as header")
+                        Text("Använd som header")
                         Image(systemName: isHeaderImage ? "checkmark.square" : "square")
                             .foregroundColor(.black)
                     }

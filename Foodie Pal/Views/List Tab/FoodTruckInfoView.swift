@@ -13,103 +13,159 @@ struct FoodTruckInfoView: View {
     @State var scheduleIsExpanded = false
     @State var imageExpanderPresented = false
     @State var downloadedImages = [ImageData]()
+    @State var userMessages = [UserMessages]()
     @State var foodTruck = FoodTrucks()
     //gets uid from ListView
     var foodTruckUid: String?
     var db = Firestore.firestore()
     
     var body: some View {
-        
-        VStack(alignment: .leading){
-            Text(foodTruck.name)
-                .font(.title)
-                .bold()
-            
-            Text(foodTruck.category)
-            
-            ScrollView(.horizontal, showsIndicators: false) {
+        ScrollView{
+            VStack(alignment: .leading){
+                Text(foodTruck.name)
+                    .font(.title)
+                    .bold()
                 
-                HStack{
-                    ForEach(downloadedImages) { image in
+                Text(foodTruck.category)
+                
+                
+                
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("ÖPPETTIDER")
+                            .font(.custom("", size: 14))
+                            .padding(.top, 10)
+                            .foregroundColor(.gray)
                         
-                        imagePreView(image: image.image)
-                            .padding(3)
+                        Spacer()
+                        Image(systemName: scheduleIsExpanded ? "chevron.up" : "chevron.down")
+                    }
+                    .onTapGesture {
+                        self.scheduleIsExpanded.toggle()
+                    }
+                    
+                    Divider()
+                        .background(.gray)
+                        .frame(width: 340)
+                    
+                    if scheduleIsExpanded {
+                        VStack{
+                            HorizontalScheduleView(weekday: "Mån", openingTime: foodTruck.schedMonOpen, closingTime: foodTruck.schedMonClose)
+                            HorizontalScheduleView(weekday: "Tis", openingTime: foodTruck.schedTueOpen, closingTime: foodTruck.schedTueClose)
+                            HorizontalScheduleView(weekday: "Ons", openingTime: foodTruck.schedWedOpen, closingTime: foodTruck.schedWedClose)
+                            HorizontalScheduleView(weekday: "Tors", openingTime: foodTruck.schedThuOpen, closingTime: foodTruck.schedThuClose)
+                            HorizontalScheduleView(weekday: "Fre", openingTime: foodTruck.schedFriOpen, closingTime: foodTruck.schedFriClose)
+                            HorizontalScheduleView(weekday: "Lör", openingTime: foodTruck.schedSatOpen, closingTime: foodTruck.schedSatClose)
+                            HorizontalScheduleView(weekday: "Sön", openingTime: foodTruck.schedSunOpen, closingTime: foodTruck.schedSunClose)
+                        }
                         
                     }
-                }
-                
-                //sheet for the expanded image view
-            }.sheet(isPresented: $imageExpanderPresented, onDismiss: {imageExpanderPresented = false}) {
-                ExpandedImageGallerySheetView(imageExpanderPresented: $imageExpanderPresented, foodTruckName: foodTruck.name, downloadedImages: downloadedImages)
-            }// end of sheet for image gallery expander
-            //ontap opens up the expanded image view
-            .onTapGesture {
-                imageExpanderPresented = true
-            }
-            
-            VStack(alignment: .leading) {
-                HStack {
-                    Text("ÖPPETTIDER")
+                    
+                    Text("ADRESS")
                         .font(.custom("", size: 14))
-                        .padding(.top, 10)
+                        .padding(.top, 30)
                         .foregroundColor(.gray)
                     
-                    Spacer()
-                    Image(systemName: scheduleIsExpanded ? "chevron.up" : "chevron.down")
-                }
-                .onTapGesture {
-                    self.scheduleIsExpanded.toggle()
-                }
-                
-                Divider()
-                    .background(.gray)
-                    .frame(width: 340)
-                
-                if scheduleIsExpanded {
-                    VStack{
-                        HorizontalScheduleView(weekday: "Mån", openingTime: foodTruck.schedMonOpen, closingTime: foodTruck.schedMonClose)
-                        HorizontalScheduleView(weekday: "Tis", openingTime: foodTruck.schedTueOpen, closingTime: foodTruck.schedTueClose)
-                        HorizontalScheduleView(weekday: "Ons", openingTime: foodTruck.schedWedOpen, closingTime: foodTruck.schedWedClose)
-                        HorizontalScheduleView(weekday: "Tors", openingTime: foodTruck.schedThuOpen, closingTime: foodTruck.schedThuClose)
-                        HorizontalScheduleView(weekday: "Fre", openingTime: foodTruck.schedFriOpen, closingTime: foodTruck.schedFriClose)
-                        HorizontalScheduleView(weekday: "Lör", openingTime: foodTruck.schedSatOpen, closingTime: foodTruck.schedSatClose)
-                        HorizontalScheduleView(weekday: "Sön", openingTime: foodTruck.schedSunOpen, closingTime: foodTruck.schedSunClose)
+                    Divider()
+                        .background(.gray)
+                        .frame(width: 340)
+                    
+                    Text(foodTruck.address)
+                        .padding(.bottom, 20)
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack{
+                            ForEach(downloadedImages) { image in
+                                
+                                imagePreView(image: image.image)
+                                    .padding(-1)
+                            }
+                        }
+                        
+                        //sheet for the expanded image view
+                    }.sheet(isPresented: $imageExpanderPresented, onDismiss: {imageExpanderPresented = false}) {
+                        ExpandedImageGallerySheetView(imageExpanderPresented: $imageExpanderPresented, foodTruckName: foodTruck.name, downloadedImages: downloadedImages)
+                    }// end of sheet for image gallery expander
+                    //ontap opens up the expanded image view
+                    .onTapGesture {
+                        imageExpanderPresented = true
                     }
                     
+                    Text("BESKRIVNING")
+                        .font(.custom("", size: 14))
+                        .padding(.top, 30)
+                        .bold()
+                        .foregroundColor(.gray)
+                    Divider()
+                        .background(.gray)
+                        .frame(width: 340)
+                    
+                    Text(foodTruck.description)
                 }
-                
-                Text("ADRESS")
-                    .font(.custom("", size: 14))
-                    .padding(.top, 30)
-                    .foregroundColor(.gray)
-                
-                Divider()
-                    .background(.gray)
-                    .frame(width: 340)
-                
-                Text(foodTruck.address)
-                
-                Text("BESKRIVNING")
+                Text("SENASTE NYTT")
                     .font(.custom("", size: 14))
                     .padding(.top, 30)
                     .bold()
                     .foregroundColor(.gray)
                 Divider()
-                    .background(.gray)
-                    .frame(width: 340)
+                ScrollView{
+                    ForEach(userMessages, id :\.self) { message in
+                        UserMessageAndDateView(message: message.message ?? "", date: message.date ?? "")
+                    }
+                }
+                .frame(height: 200)
                 
-                Text(foodTruck.description)
+                
+                
+                Spacer()
+            }.onAppear{
+                //fetches truck info based on clicked truck
+                getFoodTruckInfo()
+                //fetches images based on clicked truck
+                downloadImages()
+                //removes all messages
+                userMessages.removeAll()
+                //fetches all messages based on clicked truck
+                updateMessagesFromFirestore()
             }
-            
-            
-            
-            Spacer()
-        }.onAppear{
-            getFoodTruckInfo()
-            downloadImages()
+            .padding()
+            .padding(.top, 15)
         }
-        .padding()
-        .padding(.top, 15)
+    }
+    
+    func updateMessagesFromFirestore() {
+        //gets userUid from clicked truck or else it stops the function
+        guard let uid = foodTruckUid else {return}
+        //gets userUid from clicked truck
+        
+        db.collection("users").document(uid).collection("messages").addSnapshotListener { snapshot, err in
+
+            
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting documents \(err)")
+            } else {
+                //clears messages before loading them again
+                userMessages.removeAll()
+                for document in snapshot.documents {
+                    
+                    let result = Result {
+                        try document.data(as: UserMessages.self)
+                    }
+                    switch result {
+                    case .success(let userMessage) :
+                        
+                        userMessages.append(userMessage)
+                        
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+                //sort messages by messagePosition
+                userMessages.sort(by: { $0.messagePosition ?? 0 > $1.messagePosition ?? 0 })
+            }
+        }
     }
     
     

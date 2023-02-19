@@ -340,15 +340,13 @@ struct FoodTruckSheetView: View {
             
         }.onAppear{
             userMessages.removeAll()
-           updateListFromFirestore()
+           updateMessagesFromFirestore()
         }
         .padding()
         .padding(.top, 15)
     }
         
-    func updateListFromFirestore() {
-        //clears messages before loading them again
-        
+    func updateMessagesFromFirestore() {
         //gets userUid from logged in user
         
         db.collection("users").document(foodTruck.uid).collection("messages").addSnapshotListener { snapshot, err in
@@ -359,6 +357,7 @@ struct FoodTruckSheetView: View {
             if let err = err {
                 print("Error getting documents \(err)")
             } else {
+                //clears messages before loading them again
                 userMessages.removeAll()
                 for document in snapshot.documents {
                     
