@@ -9,10 +9,14 @@ import SwiftUI
 import Firebase
 import FirebaseAuth
 
+
+
 struct MessagesView: View {
     @State var message: String = ""
     @State var userMessages = [UserMessages]()
+    @State private var textEditorHeight: CGFloat = 100 // Set initial height
     @State var messagePosition = 0
+    private var maxheight : CGFloat = 250
     var db = Firestore.firestore()
     
     var body: some View {
@@ -24,29 +28,54 @@ struct MessagesView: View {
                 .background(Color.blue)
                 .foregroundColor(.white)
                 .bold()
-            ScrollView{
+            
+            
+                ScrollView{
                     ForEach(userMessages, id :\.self) { message in
                         UserMessageAndDateView(message: message.message ?? "", date: message.date ?? "")
                     }
-            }
-            HStack{
-                
-                TextField("Lägg upp ett meddelande", text: $message)
-                    .textFieldStyle(.roundedBorder)
-                    .padding(.horizontal)
-                
-                    
-                Spacer()
-                Button(action: {
-                    uploadMessageToFirestore()
-                    message = ""
-                }) {
-                    Image(systemName: "arrow.right.circle.fill")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .padding(.horizontal, 30)
                 }
                 
+            
+            HStack{
+                ZStack(alignment: .leading){
+                    Text(message)
+                        .font(.system(.body))
+                        .foregroundColor(.clear)
+                        .padding(14)
+                        .background(GeometryReader{
+                            Color.clear.preference(key: TextViewHeightKey.self ,value: $0.frame(in: .local).size.height)
+                        })
+                    
+                    TextEditor(text: $message)
+                        .font(.system(.body))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray, lineWidth: 1)
+                        )
+                        
+                        .frame(height: min(textEditorHeight, maxheight))
+                        
+                    
+                }
+                //.frame(height: textEditorHeight)
+                    Button(action: {
+                        uploadMessageToFirestore()
+                        message = ""
+                    }) {
+                        Image(systemName: "arrow.right.circle.fill")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .padding(.horizontal, 15)
+                    }
+                
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 4)
+            .onPreferenceChange(TextViewHeightKey.self) {
+            textEditorHeight = $0
             }
             
         }
@@ -90,6 +119,7 @@ struct MessagesView: View {
                 }
                 //sort messages by messagePosition
                 userMessages.sort(by: { $0.messagePosition ?? 0 < $1.messagePosition ?? 0 })
+                
             }
         }
     }
@@ -112,7 +142,7 @@ struct MessagesView: View {
         
         db.collection("users").document(userUid).collection("messages").addDocument(data: MessageData) { error in
             
-            // If there are no errors it displays the new image
+            //updates the list if there are no errors
             if error == nil {
                print("Message added successfully")
                 updateListFromFirestore()
@@ -128,6 +158,13 @@ struct MessagesView: View {
 struct MessagesView_Previews: PreviewProvider {
     static var previews: some View {
         MessagesView()
+    }
+}
+
+struct TextViewHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat { 0 }
+    static func reduce(value: inout Value, nextValue: () -> Value) {
+        value = value + nextValue()
     }
 }
 

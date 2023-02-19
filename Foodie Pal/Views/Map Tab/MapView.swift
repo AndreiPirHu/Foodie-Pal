@@ -228,6 +228,7 @@ struct MapView_Previews: PreviewProvider {
 struct FoodTruckSheetView: View {
     @State var scheduleIsExpanded = false
     @State var imageExpanderPresented = false
+    @State var userMessages = [UserMessages]()
     var downloadedImages = [ImageData]()
     var foodTruck = FoodTrucks()
     
@@ -318,16 +319,67 @@ struct FoodTruckSheetView: View {
                     .frame(width: 340)
                 
                 Text(foodTruck.description)
+                
+                
+                
             }
+            Text("SENASTE NYTT")
+                .font(.custom("", size: 14))
+                .padding(.top, 30)
+                .bold()
+                .foregroundColor(.gray)
+            Divider()
+            ScrollView{
+                    ForEach(userMessages, id :\.self) { message in
+                        UserMessageAndDateView(message: message.message ?? "", date: message.date ?? "")
+                    }
+            }
+            .frame(height: 200)
             
             
             
-            Spacer()
+        }.onAppear{
+            userMessages.removeAll()
+           updateListFromFirestore()
         }
         .padding()
         .padding(.top, 15)
     }
         
+    func updateListFromFirestore() {
+        //clears messages before loading them again
+        
+        //gets userUid from logged in user
+        
+        db.collection("users").document(foodTruck.uid).collection("messages").addSnapshotListener { snapshot, err in
+
+            
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting documents \(err)")
+            } else {
+                userMessages.removeAll()
+                for document in snapshot.documents {
+                    
+                    let result = Result {
+                        try document.data(as: UserMessages.self)
+                    }
+                    switch result {
+                    case .success(let userMessage) :
+                        
+                        userMessages.append(userMessage)
+                        
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+                //sort messages by messagePosition
+                userMessages.sort(by: { $0.messagePosition ?? 0 > $1.messagePosition ?? 0 })
+            }
+        }
+    }
+    
         
 }
 //the view for the opening and closing hours when it is opened
