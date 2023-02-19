@@ -7,9 +7,10 @@
 
 import Foundation
 
+//used to upload messages with the date to firestore
 var MessageData: [String: Any] = [
 
     "message": "Hello",
-    "date": Date()
-
+    "date": Date(),
+    "messagePosition": 0
 ]

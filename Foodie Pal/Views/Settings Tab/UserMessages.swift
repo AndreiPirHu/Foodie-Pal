@@ -6,3 +6,14 @@
 //
 
 import Foundation
+import FirebaseFirestoreSwift
+
+
+struct UserMessages: Codable, Hashable {
+    @DocumentID var id : String?
+    
+    var message: String?
+    var date: String?
+    var messagePosition: Int?
+    
+}
