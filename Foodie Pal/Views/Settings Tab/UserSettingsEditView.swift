@@ -11,6 +11,7 @@ import FirebaseAuth
 import FirebaseFirestore
 
 struct UserSettingsEditView: View {
+    @Environment(\.presentationMode) var presentationMode
     @State var userSettings = [UserSettings]()
     @State var receivedSetting : String
     
@@ -21,32 +22,76 @@ struct UserSettingsEditView: View {
     
     var body: some View {
         VStack{
-            ForEach(userSettings) { setting in
+          
                 
                 switch receivedSetting {
                     
                 case "description":
+                    Text("Beskrivning")
+                        .font(.title)
+                        .bold()
                     TextEditor(text: $editedSetting)
-                    
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray, lineWidth: 1)
+                        )
+                        .padding(.vertical, 60)
                 case "email":
+                    Text("Email")
+                        .font(.title)
+                        .bold()
                     TextEditor(text: $editedSetting)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray, lineWidth: 1)
+                        )
+                        .padding(.vertical, 60)
                     
-                case "name":
+                case "title":
+                    Text("Namn")
+                        .font(.title)
+                        .bold()
                     TextEditor(text: $editedSetting)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray, lineWidth: 1)
+                        )
+                        .padding(.vertical, 60)
                     
                 case "address":
+                    Text("Adress")
+                        .font(.title)
+                        .bold()
                     TextEditor(text: $editedSetting)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray, lineWidth: 1)
+                        )
+                        .padding(.vertical, 60)
                     
                 default:
                     TextEditor(text: $receivedSetting)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray, lineWidth: 1)
+                        )
+                        .padding(.vertical, 60)
                 }
-            
                 Button(action: {
                     updateSettings()
+                    //goes back to previous view
+                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Save")
+                        .foregroundColor(.white)
+                        .bold()
+                        .frame(width: 200,height: 40)
+                        .background(RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color.blue)
+                        )
+                        .padding(.bottom, 20)
                 }
-            }
+          
         }
         .onAppear() {
             listenToFirestore()
@@ -69,14 +114,15 @@ struct UserSettingsEditView: View {
                 
                 if let description = data?["description"] as? String,
                    let email = data?["email"] as? String,
-                   let name = data?["name"] as? String,
+                   // name is "title" in firestore since name is not used
+                   let name = data?["title"] as? String,
                    let address = data?["address"] as? String {
                     let userSetting = UserSettings(description: description,
                                                    email: email,
                                                    name: name,
                                                    address: address)
                     userSettings.append(userSetting)
-                    
+                    //checks which setting was pressed in previous view
                     switch receivedSetting {
                         
                     case "description":
@@ -85,7 +131,7 @@ struct UserSettingsEditView: View {
                     case "email":
                         editedSetting = email
                         
-                    case "name":
+                    case "title":
                         editedSetting = name
                         
                     case "address":

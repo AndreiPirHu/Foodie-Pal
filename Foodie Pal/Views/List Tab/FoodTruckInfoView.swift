@@ -22,7 +22,7 @@ struct FoodTruckInfoView: View {
     var body: some View {
         ScrollView{
             VStack(alignment: .leading){
-                Text(foodTruck.name)
+                Text(foodTruck.title)
                     .font(.title)
                     .bold()
                 
@@ -84,7 +84,7 @@ struct FoodTruckInfoView: View {
                         
                         //sheet for the expanded image view
                     }.sheet(isPresented: $imageExpanderPresented, onDismiss: {imageExpanderPresented = false}) {
-                        ExpandedImageGallerySheetView(imageExpanderPresented: $imageExpanderPresented, foodTruckName: foodTruck.name, downloadedImages: downloadedImages)
+                        ExpandedImageGallerySheetView(imageExpanderPresented: $imageExpanderPresented, foodTruckName: foodTruck.title, downloadedImages: downloadedImages)
                     }// end of sheet for image gallery expander
                     //ontap opens up the expanded image view
                     .onTapGesture {

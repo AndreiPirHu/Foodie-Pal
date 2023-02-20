@@ -20,7 +20,7 @@ struct ListView: View {
             
             NavigationView{
                 VStack(alignment: .leading){
-                    Text("Food Trucks")
+                    Text("Foodtrucks")
                         .font(.custom("Avenir-Heavy", size: 40))
                         .fontWeight(.heavy)
                         .padding(.horizontal, 45)
@@ -44,7 +44,8 @@ struct ListView: View {
         
     }
    
-    
+    //gets all the foodtrucks and saves all information inf foodtrucktemplate
+    //sends the information to downloadheaderimage function to save needed info and header in a new model that supports UIImage 
     func updateListFromFirestore() {
         db.collection("users").addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else {return}
@@ -74,6 +75,7 @@ struct ListView: View {
         }
     }
 
+    //downloads the header image and puts it into a model together with the needed foodTruckTemplate information
     func downloadHeaderImage(for foodTruck: FoodTrucks){
         foodTrucks.removeAll()
         
@@ -101,7 +103,7 @@ struct ListView: View {
                                         
                                         DispatchQueue.main.async {
                                             
-                                            let new_foodTruck = FoodTrucksList(name: foodTruck.name, category: foodTruck.category, description: foodTruck.description, uid: foodTruck.uid, image: image)
+                                            let new_foodTruck = FoodTrucksList(name: foodTruck.title, category: foodTruck.category, description: foodTruck.description, uid: foodTruck.uid, image: image)
                                             
                                             self.foodTrucks.append(new_foodTruck)
                                             

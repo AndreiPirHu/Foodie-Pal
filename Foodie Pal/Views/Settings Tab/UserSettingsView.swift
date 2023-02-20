@@ -18,7 +18,7 @@ struct UserSettingsView: View {
     
     @State var selectedTime = Date()
     
-    var sendSetting = ["description", "email", "name", "address"]
+    var sendSetting = ["description", "email", "title", "address"]
     
     let db = Firestore.firestore()
     
@@ -166,7 +166,7 @@ struct UserSettingsView: View {
                 
                 if let description = data?["description"] as? String,
                    let email = data?["email"] as? String,
-                   let name = data?["name"] as? String,
+                   let name = data?["title"] as? String,
                    let address = data?["address"] as? String,
                    let schedMonOpen = data?["schedMonOpen"] as? String,
                    let schedMonClose = data?["schedMonClose"] as? String,
