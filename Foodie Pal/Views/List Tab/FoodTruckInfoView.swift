@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import FirebaseStorage
+import MapKit
 
 struct FoodTruckInfoView: View {
     @State var scheduleIsExpanded = false
@@ -27,6 +28,28 @@ struct FoodTruckInfoView: View {
                     .bold()
                 
                 Text(foodTruck.category)
+                    .padding(.bottom, 20)
+                
+                // image gallery
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack{
+                        ForEach(downloadedImages) { image in
+                            
+                            imagePreView(image: image.image)
+                                .padding(-1)
+
+                        }
+                    }
+                    
+                    //sheet for the expanded image view
+                }.sheet(isPresented: $imageExpanderPresented, onDismiss: {imageExpanderPresented = false}) {
+                    ExpandedImageGallerySheetView(imageExpanderPresented: $imageExpanderPresented, foodTruckName: foodTruck.name, downloadedImages: downloadedImages)
+                }// end of sheet for image gallery expander
+                //ontap opens up the expanded image view
+                .onTapGesture {
+                    imageExpanderPresented = true
+                }
+                .padding(.bottom, 20)
                 
                 
                 
@@ -70,26 +93,31 @@ struct FoodTruckInfoView: View {
                         .background(.gray)
                         .frame(width: 340)
                     
-                    Text(foodTruck.address)
-                        .padding(.bottom, 20)
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack{
-                            ForEach(downloadedImages) { image in
-                                
-                                imagePreView(image: image.image)
-                                    .padding(-1)
-                            }
+                    Button(action: {
+                                openInMaps()
+                    }){
+                        HStack {
+                            RoundedRectangle(cornerRadius: 30, style: .continuous)
+                                .foregroundColor(Color.blue)
+                            
+                                .frame(height: 30)
+                                .overlay(
+                                    Text(foodTruck.address).foregroundColor(.white)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding(.leading, 16)
+                                )
+                            
+                            Image(systemName: "arrow.triangle.turn.up.right.circle.fill")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .offset(x: -40)
+                                .foregroundColor(.white)
+                            
                         }
-                        
-                        //sheet for the expanded image view
-                    }.sheet(isPresented: $imageExpanderPresented, onDismiss: {imageExpanderPresented = false}) {
-                        ExpandedImageGallerySheetView(imageExpanderPresented: $imageExpanderPresented, foodTruckName: foodTruck.title, downloadedImages: downloadedImages)
-                    }// end of sheet for image gallery expander
-                    //ontap opens up the expanded image view
-                    .onTapGesture {
-                        imageExpanderPresented = true
+                        .padding(.bottom, 20)
                     }
+                    
+                    
                     
                     Text("BESKRIVNING")
                         .font(.custom("", size: 14))
@@ -131,6 +159,19 @@ struct FoodTruckInfoView: View {
             .padding()
             .padding(.top, 15)
         }
+    }
+    
+    func openInMaps(){
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(foodTruck.address) { (placemarks, error) in
+                   if let error = error {
+                       print("Geocoding error: \(error.localizedDescription)")
+                   } else if let placemark = placemarks?.first {
+                       let mapItem = MKMapItem(placemark: MKPlacemark(placemark: placemark))
+                       mapItem.name = foodTruck.address
+                       mapItem.openInMaps()
+                   }
+               }
     }
     
     func updateMessagesFromFirestore() {

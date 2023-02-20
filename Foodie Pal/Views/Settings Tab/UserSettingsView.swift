@@ -28,7 +28,7 @@ struct UserSettingsView: View {
             VStack{
                 ForEach(userSettings) { setting in
                     
-                    Text("Hej, \(setting.name)")
+                    Text("Välkommen \(setting.name)!")
                         .padding(.top, 30)
                         .font(.title)
                     
