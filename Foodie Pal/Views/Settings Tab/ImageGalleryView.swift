@@ -21,6 +21,9 @@ struct ImageGalleryView: View {
     @State var selectedGalleryImageDocID: String?
     @State var selectedGalleryImagePath: String?
     @State var isHeaderImage = false
+    var foodTruckName: String = ""
+    
+    @State var imageExpanderPresented = false
     
     
     
@@ -42,8 +45,9 @@ struct ImageGalleryView: View {
                     HStack{
                         
                         Text("Använd som header")
+                            .foregroundColor(.primary)
                         Image(systemName: isHeaderImage ? "checkmark.square" : "square")
-                            .foregroundColor(.black)
+                            .foregroundColor(.primary)
                     }
                    
                 }
@@ -80,29 +84,28 @@ struct ImageGalleryView: View {
             
             Divider()
             
-            HStack {
-                
-               //Loops through all the images retrieved and displays them in a list to be selected and deleted
-                
-                List(downloadedImages, id :\.self) { image in
-                    HStack{
-                        Spacer()
-                        Image(uiImage: image.image)
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                            .scaleEffect(selectedGalleryImageDocID == image.docID ? 1: 0.7)
-                            .onTapGesture{
-                                self.selectedGalleryImageDocID = image.docID
-                                self.selectedGalleryImagePath = image.url
-                            }
-                            .padding(.top, 10)
-                        Spacer()
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack{
+                    ForEach(downloadedImages) { image in
+                        
+                        VStack{
+                            Image(uiImage: image.image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                
+                                .onTapGesture{
+                                    self.selectedGalleryImageDocID = image.docID
+                                    self.selectedGalleryImagePath = image.url
+                                }
+                            
+                            
+                        }//changes size when selected
+                        .frame(width: selectedGalleryImageDocID == image.docID ? 150: 110, height: selectedGalleryImageDocID == image.docID ? 190: 150)
+                        .cornerRadius(5)
                     }
-                    
-                    
                 }
-                .scrollContentBackground(.hidden)
-            }
+            }.padding(10)
             
             //Shows delete button if an image has been selected
             //deletes the selected image from storage and firestore
@@ -335,6 +338,8 @@ struct ImageGalleryView: View {
     
     
 }
+
+
 
 struct ImageGalleryView_Previews: PreviewProvider {
     static var previews: some View {

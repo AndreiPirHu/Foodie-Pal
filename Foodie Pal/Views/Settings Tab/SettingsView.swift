@@ -24,10 +24,12 @@ struct SettingsView: View {
                 TextField("Email", text: $email)
                     .textFieldStyle(.roundedBorder)
                     .frame(width: 200)
+                    .foregroundColor(.primary)
                 
                 SecureField("Lösenord", text: $password)
                     .textFieldStyle(.roundedBorder)
                     .frame(width: 200)
+                    .foregroundColor(.primary)
                 
                 Button(action: {
                     login()
@@ -48,6 +50,7 @@ struct SettingsView: View {
                 }) {
                     Text("Forgot your password?")
                         .bold()
+                        .foregroundColor(.blue)
                     
                 }
                 
@@ -63,7 +66,6 @@ struct SettingsView: View {
             if error != nil {
                 print(error!.localizedDescription)
             }else {
-               // print("login successful \(Auth.auth().currentUser?.uid)")
                 isLoggedIn = true
                 
             }

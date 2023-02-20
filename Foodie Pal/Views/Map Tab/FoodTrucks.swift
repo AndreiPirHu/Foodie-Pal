@@ -10,6 +10,7 @@ import SwiftUI
 
 
 struct FoodTrucks: Codable, Hashable{
+    var title: String = ""
     var name: String = ""
     var email: String = ""
     var description: String = ""
