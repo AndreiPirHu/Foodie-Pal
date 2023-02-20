@@ -76,11 +76,9 @@ struct ListView: View {
 
     func downloadHeaderImage(for foodTruck: FoodTrucks){
         foodTrucks.removeAll()
-        print("Började funktionen \(foodTruck.uid) ")
         
         db.collection("users").document(foodTruck.uid).collection("images").document("HeaderImage").getDocument() { snapshot, error in
             
-            print("fick rätt uid \(foodTruck.uid)" )
             if error == nil && snapshot != nil {
                 
                 DispatchQueue.main.async {
@@ -88,11 +86,11 @@ struct ListView: View {
                 if let snapshot = snapshot, snapshot.exists {
                     
                     if let fieldValue = snapshot.get("url") as? String {
-                        print("fick rätt url \(fieldValue)" )
+                        
                         let path = fieldValue
                         let storageRef = Storage.storage().reference()
                         let fileRef = storageRef.child(path)
-                        print("fick rätt url \(path)" )
+                        
                         fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
                             
                             if error == nil && data != nil{
@@ -103,14 +101,10 @@ struct ListView: View {
                                         
                                         DispatchQueue.main.async {
                                             
-                                            print("fick in bild \(foodTruck.name)")
-                                            
-                                            
                                             let new_foodTruck = FoodTrucksList(name: foodTruck.name, category: foodTruck.category, description: foodTruck.description, uid: foodTruck.uid, image: image)
                                             
                                             self.foodTrucks.append(new_foodTruck)
                                             
-                                            print(new_foodTruck.name)
                                         }
                                     }
                                 }
