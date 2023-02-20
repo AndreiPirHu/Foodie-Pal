@@ -9,9 +9,10 @@ import SwiftUI
 import Firebase
 
 struct ContentView: View {
+    
     let db = Firestore.firestore()
     
-   
+    
     var body: some View {
         TabView {
             MapView()
@@ -28,7 +29,9 @@ struct ContentView: View {
                 .tabItem() {
                     Image(systemName: "slider.horizontal.3")
                         Text("Inställningar")
+                        
                 }
+                
         }
         
     }

@@ -12,6 +12,7 @@ import FirebaseCore
 import FirebaseStorage
 
 struct MapView: View {
+    @Environment (\.colorScheme) var colorScheme
     
     @StateObject private var mapAPI = MapAPI()
     @State private var text = ""
@@ -38,7 +39,8 @@ struct MapView: View {
                     
                     //Clickable map annotations with foodtruck information
                     MapAnnotation(coordinate: location.coordinate, anchorPoint: CGPoint(x: 0.5, y: 1)){
-                        Image("Map Marker")
+                        //changes image based on if light or dark mode is active
+                        Image(colorScheme == .light ? "Map Marker" : "Map Marker Light")
                             .resizable()
                             .scaledToFit()
                             .scaleEffect(selectedMarker == location.id ? 1: 0.7)

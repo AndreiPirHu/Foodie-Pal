@@ -36,6 +36,7 @@ struct MessagesView: View {
                     }
                 }
                 
+                
             
             HStack{
                 ZStack(alignment: .leading){
