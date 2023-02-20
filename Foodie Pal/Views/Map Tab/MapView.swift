@@ -86,7 +86,7 @@ struct MapView: View {
                 
                     // scrollView makes the sheet show the top of the page even when only showing a small part of it
                     ScrollView(.vertical, showsIndicators: false) {
-                        FoodTruckSheetView(downloadedImages: downloadedImages, foodTruck: foodTruck)
+                        FoodTruckSheetView(isSheetPresented: $isSheetPresented, downloadedImages: downloadedImages, foodTruck: foodTruck)
                     }
                     .onAppear{
                         //downloads the images once the sheet has appeared so that extra clicks dont runt it several times
@@ -228,6 +228,7 @@ struct MapView_Previews: PreviewProvider {
 
 //View for the food truck information sheet
 struct FoodTruckSheetView: View {
+    @Binding var isSheetPresented: Bool
     @State var scheduleIsExpanded = false
     @State var imageExpanderPresented = false
     @State var userMessages = [UserMessages]()
@@ -239,10 +240,20 @@ struct FoodTruckSheetView: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            Text(foodTruck.name)
-                .font(.title)
-                .bold()
-            
+            HStack{
+                Text(foodTruck.name)
+                    .font(.title)
+                    .bold()
+                Spacer()
+                Button(action: {
+                    isSheetPresented = false
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.gray)
+                }
+            }
             Text(foodTruck.category)
             
             
