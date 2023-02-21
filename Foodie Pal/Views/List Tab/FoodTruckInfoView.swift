@@ -170,7 +170,7 @@ struct FoodTruckInfoView: View {
                     Image(systemName: "arrow.backward.circle.fill")
                         .resizable()
                         .frame(width: 40, height: 40)
-                        .padding(.top, 5)
+                        .padding(.vertical, 5)
                         .foregroundColor(.gray)
                 }
             }

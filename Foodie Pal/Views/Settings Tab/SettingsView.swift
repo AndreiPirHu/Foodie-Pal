@@ -46,15 +46,16 @@ struct SettingsView: View {
                 .padding(.top)
                 .offset(y: 10)
                 
-                Button(action: {
+                //Add function to recover password
+               // Button(action: {
                     //recover forgotten password
                     
-                }) {
-                    Text("Forgot your password?")
-                        .bold()
-                        .foregroundColor(.blue)
+                //}) {
+                  //  Text("Forgot your password?")
+                    //    .bold()
+                      //  .foregroundColor(.blue)
                     
-                }
+                //}
                 
             }
             .navigationDestination(isPresented: $isLoggedIn) {
