@@ -98,7 +98,31 @@ struct MapView: View {
                     }
                 }
                 onDismiss: {isSheetPresented = false}
-               
+                    .overlay(alignment: .topTrailing, content: {
+                        //Button centers map position on user position, if not available it centers on stockholm
+                        Button(action: {
+                            mapAPI.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locationManager.location?.latitude ?? 59.30713183216659, longitude: locationManager.location?.longitude ?? 18.07499885559082), span:MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
+                        }) {
+                            Image(systemName: "location.fill")
+                                .resizable()
+                                .frame(width: 30, height:30)
+                                .padding()
+                               
+                                
+
+                                .background(content: {
+                                    
+                                    Rectangle()
+                                        .fill(.ultraThinMaterial)
+                                        .cornerRadius(20)
+                                        
+                                        
+                                })
+                                .frame(width: 40, height: 40)
+                                .padding()
+                                .padding(.top, 40)
+                        }
+                    })
             }
             .onAppear() {
                 updateMarkersFirestore()
