@@ -15,6 +15,7 @@ import FirebaseAuth
 
 
 struct ImageGalleryView: View {
+    @Environment(\.presentationMode) var presentationMode
     @State var isPickerShowing = false
     @State var selectedImage: UIImage?
     @State var downloadedImages = [ImageData]()
@@ -132,6 +133,20 @@ struct ImageGalleryView: View {
         .sheet(isPresented: $isPickerShowing, onDismiss: nil) {
             //Image picker
             ImagePicker(selectedImage: $selectedImage, isPickerShowing: $isPickerShowing)
+        }
+        .navigationBarBackButtonHidden()
+        .toolbar{
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "arrow.backward.circle.fill")
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .padding(.top, 5)
+                        .foregroundColor(.gray)
+                }
+            }
         }
         
         

@@ -11,6 +11,8 @@ import FirebaseStorage
 import MapKit
 
 struct FoodTruckInfoView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
     @State var scheduleIsExpanded = false
     @State var imageExpanderPresented = false
     @State var downloadedImages = [ImageData]()
@@ -158,6 +160,20 @@ struct FoodTruckInfoView: View {
             }
             .padding()
             .padding(.top, 15)
+        }
+        .navigationBarBackButtonHidden()
+        .toolbar{
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "arrow.backward.circle.fill")
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .padding(.top, 5)
+                        .foregroundColor(.gray)
+                }
+            }
         }
     }
     

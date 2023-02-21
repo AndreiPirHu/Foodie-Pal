@@ -11,6 +11,8 @@ import Firebase
 struct SettingsView: View {
     @State var email = ""
     @State var password = ""
+    @State var errorMessage = ""
+    @State var showLoginErrorAlert = false
     
     @State var isLoggedIn = false
     
@@ -57,6 +59,10 @@ struct SettingsView: View {
             }
             .navigationDestination(isPresented: $isLoggedIn) {
                 UserSettingsView().navigationBarBackButtonHidden(true)
+                
+            }
+            .alert(isPresented: $showLoginErrorAlert){
+                Alert(title: Text("Inloggning misslyckades"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
         }
     }
@@ -64,7 +70,33 @@ struct SettingsView: View {
     func login() {
         Auth.auth().signIn(withEmail: email, password: password){ result, error in
             if error != nil {
+                //översätter errors från firestore till svenska och ger ut dem som alert
+                switch error!.localizedDescription {
+                    
+                case "The password is invalid or the user does not have a password.":
+                    print("Lösenordet är felaktigt")
+                    errorMessage = "Lösenordet är felaktigt"
+                    
+                case "There is no user record corresponding to this identifier. The user may have been deleted.":
+                    print("Hittar ingen användare med denna mailadress")
+                    errorMessage = "Det finns ingen användare med denna mailadress"
+                    
+                case "The email address is badly formatted.":
+                    print("Mailadressen är dåligt formatterad")
+                    errorMessage = "Mailadressen är dåligt formatterad"
+                    
+                default:
+                    print("Det uppstod ett problem när du försökte logga in")
+                    errorMessage = "Det uppstod ett problem när du försökte logga in"
+                }
+                
                 print(error!.localizedDescription)
+               
+                self.showLoginErrorAlert = true
+                
+                    
+                
+                
             }else {
                 isLoggedIn = true
                 

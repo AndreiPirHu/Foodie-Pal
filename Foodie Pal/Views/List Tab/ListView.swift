@@ -10,6 +10,7 @@ import Firebase
 import FirebaseStorage
 
 struct ListView: View {
+    
     @State var foodTruckTemplate = [FoodTrucks]()
     @State var foodTrucks = [FoodTrucksList]()
     
@@ -33,8 +34,11 @@ struct ListView: View {
                         }
                         
                         
+                        
+                        
                     }.scrollContentBackground(.hidden)
                         .frame(width: 450)
+                    
                 }
             }
         }
