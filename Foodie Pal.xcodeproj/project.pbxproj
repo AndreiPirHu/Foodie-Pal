@@ -34,6 +34,7 @@
 		7579067E2981252F003D5155 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 7579067D2981252F003D5155 /* FirebaseFirestore */; };
 		757906802981252F003D5155 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7579067F2981252F003D5155 /* FirebaseFirestoreSwift */; };
 		757906822981252F003D5155 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 757906812981252F003D5155 /* FirebaseFunctions */; };
+		7583F07029A3F36E00D4243E /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7583F06F29A3F36D00D4243E /* LocationManager.swift */; };
 		75D2ECF2298416F000B4217D /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2ECF1298416F000B4217D /* MapView.swift */; };
 		75D2ECF42984170600B4217D /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2ECF32984170600B4217D /* ListView.swift */; };
 		75D2ECF62984171500B4217D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2ECF52984171500B4217D /* SettingsView.swift */; };
@@ -83,6 +84,7 @@
 		7579066529810A1F003D5155 /* Foodie PalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Foodie PalUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7579066929810A1F003D5155 /* Foodie_PalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalUITests.swift; sourceTree = "<group>"; };
 		7579066B29810A1F003D5155 /* Foodie_PalUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		7583F06F29A3F36D00D4243E /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		75D2ECF1298416F000B4217D /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		75D2ECF32984170600B4217D /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		75D2ECF52984171500B4217D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				753D588E298CDEA800C132B2 /* MapModel.swift */,
 				753D5893298FE34800C132B2 /* SheetExtension.swift */,
 				753D5895298FFB8600C132B2 /* FoodTrucks.swift */,
+				7583F06F29A3F36D00D4243E /* LocationManager.swift */,
 			);
 			path = "Map Tab";
 			sourceTree = "<group>";
@@ -386,6 +389,7 @@
 				7579065129810A17003D5155 /* ContentView.swift in Sources */,
 				75D2ECF2298416F000B4217D /* MapView.swift in Sources */,
 				753D58892988020C00C132B2 /* UserSettings.swift in Sources */,
+				7583F07029A3F36E00D4243E /* LocationManager.swift in Sources */,
 				753D58B029A0F78300C132B2 /* FoodTruckInfoView.swift in Sources */,
 				753D588729854DE900C132B2 /* UserSettingsView.swift in Sources */,
 				753D58B629A191F900C132B2 /* MessageData.swift in Sources */,
@@ -554,6 +558,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Foodie-Pal-Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Dela din plats med oss så vi kan visa var du är på kartan!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -583,6 +588,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Foodie-Pal-Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Dela din plats med oss så vi kan visa var du är på kartan!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

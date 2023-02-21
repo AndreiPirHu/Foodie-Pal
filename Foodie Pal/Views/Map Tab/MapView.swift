@@ -26,6 +26,8 @@ struct MapView: View {
     //@State private var isExpanded: Bool = false
     
     @State var downloadedImages = [ImageData]()
+    
+    var locationManager = LocationManager()
 
     let db = Firestore.firestore()
     let storage = Storage.storage()
@@ -35,7 +37,7 @@ struct MapView: View {
             VStack {
                
                 //Map centered on stockholm
-                Map(coordinateRegion: $mapAPI.region, annotationItems: mapAPI.locations) { location in
+                Map(coordinateRegion: $mapAPI.region, showsUserLocation: true, annotationItems: mapAPI.locations) { location in
                     
                     //Clickable map annotations with foodtruck information
                     MapAnnotation(coordinate: location.coordinate, anchorPoint: CGPoint(x: 0.5, y: 1)){
@@ -87,10 +89,12 @@ struct MapView: View {
                     // scrollView makes the sheet show the top of the page even when only showing a small part of it
                     ScrollView(.vertical, showsIndicators: false) {
                         FoodTruckSheetView(isSheetPresented: $isSheetPresented, downloadedImages: downloadedImages, foodTruck: foodTruck)
+                            
                     }
                     .onAppear{
                         //downloads the images once the sheet has appeared so that extra clicks dont runt it several times
                         downloadImages(uid: foodTruck.uid)
+                        
                     }
                 }
                 onDismiss: {isSheetPresented = false}
@@ -98,7 +102,8 @@ struct MapView: View {
             }
             .onAppear() {
                 updateMarkersFirestore()
-
+                locationManager.startLocationUpdates()
+                
                 
             }
     }
