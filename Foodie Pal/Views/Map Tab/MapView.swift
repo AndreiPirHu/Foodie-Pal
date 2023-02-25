@@ -12,6 +12,7 @@ import FirebaseCore
 import FirebaseStorage
 
 struct MapView: View {
+    @Environment (\.colorScheme) var colorScheme
     
     @StateObject private var mapAPI = MapAPI()
     @State private var text = ""
@@ -22,7 +23,11 @@ struct MapView: View {
     @State var foodTruck = FoodTrucks()
     
     @State var isSheetPresented = false
-    @State private var isExpanded: Bool = false
+    //@State private var isExpanded: Bool = false
+    
+    @State var downloadedImages = [ImageData]()
+    
+    var locationManager = LocationManager()
 
     let db = Firestore.firestore()
     let storage = Storage.storage()
@@ -30,180 +35,103 @@ struct MapView: View {
     
     var body: some View {
             VStack {
-                TextField("Enter an address", text: $text)
-                    .textFieldStyle(.roundedBorder)
-                    .padding(.horizontal)
-                
-                
-                Button(action: {
-                    mapAPI.getLocation(address: text, delta: 0.1, title: "", email: "", description: "", category: "")
+               
+                //Map centered on stockholm
+                Map(coordinateRegion: $mapAPI.region, showsUserLocation: true, annotationItems: mapAPI.locations) { location in
                     
-                }){
-                    Text("Find address")
-                }
-                
-                Map(coordinateRegion: $mapAPI.region, annotationItems: mapAPI.locations) { location in
-                    
+                    //Clickable map annotations with foodtruck information
                     MapAnnotation(coordinate: location.coordinate, anchorPoint: CGPoint(x: 0.5, y: 1)){
-                        Image("Map Marker")
+                        //changes image based on if light or dark mode is active
+                        Image(colorScheme == .light ? "Map Marker" : "Map Marker Light")
                             .resizable()
                             .scaledToFit()
                             .scaleEffect(selectedMarker == location.id ? 1: 0.7)
                             .animation(.default, value: 1)
                             .onTapGesture {
                                 
-                                    self.selectedMarker = location.id
+                                //Gives the id of the current selected marker
+                                self.selectedMarker = location.id
+                                
+                                //Small delay when the sheet is already presented so that the view closes and opens again and resets the images that load onAppear
+                                if isSheetPresented == true {
+                                    isSheetPresented = false
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                                        isSheetPresented = true
+                                    }
+                                }else {
                                     isSheetPresented = true
-                                
-                                
+                                }
                                 
                                 foodTruck.description = location.description
                                 foodTruck.name = location.title
                                 foodTruck.category = location.category
                                 foodTruck.address = location.name
-                                
-                            
-                                
+                                foodTruck.schedMonOpen = location.schedMonOpen
+                                foodTruck.schedMonClose = location.schedMonClose
+                                foodTruck.schedTueOpen = location.schedTueOpen
+                                foodTruck.schedTueClose = location.schedTueClose
+                                foodTruck.schedWedOpen = location.schedWedOpen
+                                foodTruck.schedWedClose = location.schedWedClose
+                                foodTruck.schedThuOpen = location.schedThuOpen
+                                foodTruck.schedThuClose = location.schedThuClose
+                                foodTruck.schedFriOpen = location.schedFriOpen
+                                foodTruck.schedFriClose = location.schedFriClose
+                                foodTruck.schedSatOpen = location.schedSatOpen
+                                foodTruck.schedSatClose = location.schedSatClose
+                                foodTruck.schedSunOpen = location.schedSunOpen
+                                foodTruck.schedSunClose = location.schedSunClose
+                                foodTruck.uid = location.uid
                             }
                     }
-                }
+                }// food truck information sheet that appears when a map annotation is clicked
                 .bottomSheet(presentationDetents: [.height(300),.large], isPresented: $isSheetPresented, sheetCornerRadius: 20) {
                 
                     // scrollView makes the sheet show the top of the page even when only showing a small part of it
                     ScrollView(.vertical, showsIndicators: false) {
-                        VStack{
-                            Text(foodTruck.name ?? "")
-                                .font(.title)
-                                .bold()
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                        FoodTruckSheetView(isSheetPresented: $isSheetPresented, downloadedImages: downloadedImages, foodTruck: foodTruck)
                             
-                            Text(foodTruck.category ?? "")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text("ÖPPETTIDER")
-                                        .font(.custom("", size: 14))
-                                        .padding(.top, 10)
-                                        .foregroundColor(.gray)
-                                    
-                                    Spacer()
-                                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                                }
-                                .onTapGesture {
-                                    self.isExpanded.toggle()
-                                }
-                                
-                                Divider()
-                                    .background(.gray)
-                                    .frame(width: 340)
-                                
-                                if isExpanded {
-                                    VStack{
-                                        HStack{
-                                            Text("Mån")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                            
-                                        }
-                                        HStack{
-                                            Text("Tis")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                        }
-                                        HStack{
-                                            Text("Ons")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                        }
-                                        HStack{
-                                            Text("Tors")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                        }
-                                        HStack{
-                                            Text("Fre")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                        }
-                                        HStack{
-                                            Text("Lör")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                        }
-                                        HStack{
-                                            Text("Sön")
-                                                .padding(.top, 3)
-                                            Spacer()
-                                            Text("11-19")
-                                        }
-                                    }
-                                    
-                                }
-                                
-                                
-                                Text("ADRESS")
-                                    .font(.custom("", size: 14))
-                                    .padding(.top, 30)
-                                    .foregroundColor(.gray)
-                                Divider()
-                                    .background(.gray)
-                                    .frame(width: 340)
-                                
-                                
-                                Text(foodTruck.address ?? "")
-                                
-                                
-                                
-                                
-                                Text("BESKRIVNING")
-                                    .font(.custom("", size: 14))
-                                    .padding(.top, 30)
-                                    .bold()
-                                    .foregroundColor(.gray)
-                                Divider()
-                                    .background(.gray)
-                                    .frame(width: 340)
-                                
-                                Text(foodTruck.description ?? "")
-                                        
-                                   
-                                    
-                                        
-                            }
-                            
-                                //.frame(maxWidth: .infinity, alignment: .leading)
-                          
-                            Spacer()
-                        }
-                        .padding()
-                        .padding(.top, 15)
-                        
-                        
+                    }
+                    .onAppear{
+                        //downloads the images once the sheet has appeared so that extra clicks dont runt it several times
+                        downloadImages(uid: foodTruck.uid)
                         
                     }
-                    
-                    
-                    
-                    
-                    
                 }
-            onDismiss: {isSheetPresented = false}
+                onDismiss: {isSheetPresented = false}
+                    .overlay(alignment: .topTrailing, content: {
+                        //Button centers map position on user position, if not available it centers on stockholm
+                        Button(action: {
+                            mapAPI.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locationManager.location?.latitude ?? 59.30713183216659, longitude: locationManager.location?.longitude ?? 18.07499885559082), span:MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
+                        }) {
+                            Image(systemName: "location.fill")
+                                .resizable()
+                                .frame(width: 30, height:30)
+                                .padding()
+                               
+                                
+
+                                .background(content: {
+                                    
+                                    Rectangle()
+                                        .fill(.ultraThinMaterial)
+                                        .cornerRadius(20)
+                                        
+                                        
+                                })
+                                .frame(width: 40, height: 40)
+                                .padding()
+                                .padding(.top, 40)
+                        }
+                    })
             }
             .onAppear() {
                 updateMarkersFirestore()
+                locationManager.startLocationUpdates()
                 
                 
             }
     }
-    
+    //loads all the markers from firestore
     func updateMarkersFirestore() {
         
         db.collection("users").addSnapshotListener { snapshot, err in
@@ -216,6 +144,7 @@ struct MapView: View {
                 
                 for document in snapshot.documents {
                 
+                    //converts the data to a object from the model SetMarker
                     let result = Result {
                         try document.data(as: SetMarker.self)
                     }
@@ -230,7 +159,7 @@ struct MapView: View {
                             let filteredAddress = setMarker.address.replacingOccurrences(of: "å", with: "a").replacingOccurrences(of: "ä", with: "a").replacingOccurrences(of: "ö", with: "o")
                             
                             // Creates a pin using the setMarker values taken from firestore
-                            mapAPI.getLocation(address: "\(filteredAddress) Stockholm", delta: 0.1, title: setMarker.title, email: setMarker.email, description: setMarker.description, category: setMarker.category)
+                            mapAPI.getLocation(address: "\(filteredAddress) Stockholm", delta: 0.1, title: setMarker.title, email: setMarker.email, description: setMarker.description, category: setMarker.category, schedMonOpen: setMarker.schedMonOpen, schedMonClose: setMarker.schedMonClose, schedTueOpen: setMarker.schedTueOpen, schedTueClose: setMarker.schedTueClose, schedWedOpen: setMarker.schedWedOpen, schedWedClose: setMarker.schedWedClose, schedThuOpen: setMarker.schedThuOpen, schedThuClose: setMarker.schedThuClose, schedFriOpen: setMarker.schedFriOpen, schedFriClose: setMarker.schedFriClose, schedSatOpen: setMarker.schedSatOpen, schedSatClose: setMarker.schedSatClose, schedSunOpen: setMarker.schedSunOpen, schedSunClose: setMarker.schedSunClose, uid: setMarker.uid)
                             
                             
                             
@@ -250,10 +179,399 @@ struct MapView: View {
         }
     }
     
+    //downloads images from storage to show in  imageView on the sheet
+    func downloadImages(uid: String) {
+        downloadedImages.removeAll()
+        db.collection("users").document(uid).collection("images").getDocuments { snapshot, error in
+            
+            if error == nil && snapshot != nil {
+                
+                //array for all the fetched paths from documents
+                var paths = [String]()
+                
+                //loops through all documents
+                for doc in snapshot!.documents {
+                    
+                    // extract file path and adds url to array
+                    paths.append(doc["url"] as! String)
+                    
+                    }
+                    
+                    //Loop through each file path in paths array and fetch data from storage
+                    for path in paths {
+                        
+                        //Get reference to storage
+                        let storageRef = Storage.storage().reference()
+                        
+                        //specify path
+                        let fileRef = storageRef.child(path)
+                        
+                        //Retrieve the data
+                        fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
+                            
+                            //check for errors
+                            //checks that data is not nil
+                            if error == nil && data != nil {
+                                
+                                //create UIImage and put it in image array for display
+                                if let image = UIImage(data: data!){
+                                    
+                                    //removes images/ and .jpg to give the correct docID
+                                    let docID = path.replacingOccurrences(of: "images/", with: "").replacingOccurrences(of: ".jpg", with: "")
+                                    
+                                    DispatchQueue.main.async {
+                                        
+                                        let downloadedImage = ImageData(docID: docID, url: path, image: image)
+                                        
+                                        downloadedImages.append(downloadedImage)
+                                        
+                                    }
+                                    
+                                }
+                            }
+                        }
+                    }
+            }
+            
+            
+            
+            
+            
+        }
+            
+            
+            
+            
+            
+        }
+    
+    
+    
 }
 
 struct MapView_Previews: PreviewProvider {
     static var previews: some View {
         MapView()
+    }
+}
+
+//View for the food truck information sheet
+struct FoodTruckSheetView: View {
+    @Binding var isSheetPresented: Bool
+    @State var scheduleIsExpanded = false
+    @State var imageExpanderPresented = false
+    @State var userMessages = [UserMessages]()
+    var downloadedImages = [ImageData]()
+    var foodTruck = FoodTrucks()
+    
+    var db = Firestore.firestore()
+    
+    
+    var body: some View {
+        VStack(alignment: .leading){
+            HStack{
+                Text(foodTruck.name)
+                    .font(.title)
+                    .bold()
+                Spacer()
+                Button(action: {
+                    isSheetPresented = false
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.gray)
+                }
+            }.padding(.bottom, -10)
+            Text(foodTruck.category)
+                .padding(.bottom, 20)
+            
+            // image gallery
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack{
+                    ForEach(downloadedImages) { image in
+                        
+                        imagePreView(image: image.image)
+                            .padding(-1)
+
+                    }
+                }
+                
+                //sheet for the expanded image view
+            }.sheet(isPresented: $imageExpanderPresented, onDismiss: {imageExpanderPresented = false}) {
+                ExpandedImageGallerySheetView(imageExpanderPresented: $imageExpanderPresented, foodTruckName: foodTruck.name, downloadedImages: downloadedImages)
+            }// end of sheet for image gallery expander
+            //ontap opens up the expanded image view
+            .onTapGesture {
+                imageExpanderPresented = true
+            }
+            .padding(.bottom, 20)
+            
+            
+            
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("ÖPPETTIDER")
+                        .font(.custom("", size: 14))
+                        .padding(.top, 10)
+                        .foregroundColor(.gray)
+                    
+                    Spacer()
+                    Image(systemName: scheduleIsExpanded ? "chevron.up" : "chevron.down")
+                }
+                .onTapGesture {
+                    self.scheduleIsExpanded.toggle()
+                }
+                
+                Divider()
+                    .background(.gray)
+                    .frame(width: 340)
+                
+                if scheduleIsExpanded {
+                    VStack{
+                        HorizontalScheduleView(weekday: "Mån", openingTime: foodTruck.schedMonOpen, closingTime: foodTruck.schedMonClose)
+                        HorizontalScheduleView(weekday: "Tis", openingTime: foodTruck.schedTueOpen, closingTime: foodTruck.schedTueClose)
+                        HorizontalScheduleView(weekday: "Ons", openingTime: foodTruck.schedWedOpen, closingTime: foodTruck.schedWedClose)
+                        HorizontalScheduleView(weekday: "Tors", openingTime: foodTruck.schedThuOpen, closingTime: foodTruck.schedThuClose)
+                        HorizontalScheduleView(weekday: "Fre", openingTime: foodTruck.schedFriOpen, closingTime: foodTruck.schedFriClose)
+                        HorizontalScheduleView(weekday: "Lör", openingTime: foodTruck.schedSatOpen, closingTime: foodTruck.schedSatClose)
+                        HorizontalScheduleView(weekday: "Sön", openingTime: foodTruck.schedSunOpen, closingTime: foodTruck.schedSunClose)
+                    }
+                    
+                }
+                
+                Text("ADRESS")
+                    .font(.custom("", size: 14))
+                    .padding(.top, 30)
+                    .foregroundColor(.gray)
+                
+                Divider()
+                    .background(.gray)
+                    .frame(width: 340)
+                
+                Button(action: {
+                            openInMaps()
+                }){
+                    HStack {
+                        RoundedRectangle(cornerRadius: 30, style: .continuous)
+                            .foregroundColor(Color.blue)
+                        
+                            .frame(height: 30)
+                            .overlay(
+                                Text(foodTruck.address).foregroundColor(.white)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.leading, 16)
+                            )
+                        
+                        Image(systemName: "arrow.triangle.turn.up.right.circle.fill")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .offset(x: -40)
+                            .foregroundColor(.white)
+                        
+                    }
+                    .padding(.bottom, 20)
+                }
+                
+                
+                
+                
+                Text("BESKRIVNING")
+                    .font(.custom("", size: 14))
+                    .padding(.top, 30)
+                    .bold()
+                    .foregroundColor(.gray)
+                Divider()
+                    .background(.gray)
+                    .frame(width: 340)
+                
+                Text(foodTruck.description)
+                
+                
+                
+            }
+            Text("SENASTE NYTT")
+                .font(.custom("", size: 14))
+                .padding(.top, 30)
+                .bold()
+                .foregroundColor(.gray)
+            Divider()
+            ScrollView{
+                    ForEach(userMessages, id :\.self) { message in
+                        UserMessageAndDateView(message: message.message ?? "", date: message.date ?? "")
+                    }
+            }
+            .frame(height: 200)
+            
+            
+            
+        }.onAppear{
+            userMessages.removeAll()
+           updateMessagesFromFirestore()
+        }
+        .padding()
+        .padding(.top, 15)
+    }
+    
+    func openInMaps(){
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(foodTruck.address) { (placemarks, error) in
+                   if let error = error {
+                       print("Geocoding error: \(error.localizedDescription)")
+                   } else if let placemark = placemarks?.first {
+                       let mapItem = MKMapItem(placemark: MKPlacemark(placemark: placemark))
+                       mapItem.name = foodTruck.address
+                       mapItem.openInMaps()
+                   }
+               }
+    }
+        
+    func updateMessagesFromFirestore() {
+        //gets userUid from logged in user
+        
+        db.collection("users").document(foodTruck.uid).collection("messages").addSnapshotListener { snapshot, err in
+
+            
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting documents \(err)")
+            } else {
+                //clears messages before loading them again
+                userMessages.removeAll()
+                for document in snapshot.documents {
+                    
+                    let result = Result {
+                        try document.data(as: UserMessages.self)
+                    }
+                    switch result {
+                    case .success(let userMessage) :
+                        
+                        userMessages.append(userMessage)
+                        
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+                //sort messages by messagePosition
+                userMessages.sort(by: { $0.messagePosition ?? 0 > $1.messagePosition ?? 0 })
+            }
+        }
+    }
+    
+        
+}
+//the view for the opening and closing hours when it is opened
+struct HorizontalScheduleView: View {
+    var weekday: String
+    var openingTime: String
+    var closingTime: String
+    
+    var body: some View {
+        HStack{
+            Text(weekday)
+                .padding(.top, 3)
+            Spacer()
+            if openingTime == "Stängt" || closingTime == "Stängt"  {
+                Text("Stängt")
+                    .foregroundColor(.red)
+            } else {
+                Text("\(openingTime)-\(closingTime)")
+            }
+            
+            
+        }
+    }
+}
+//view for the small images that are in the scrollView
+struct imagePreView: View {
+    var image : UIImage
+    
+    var body : some View{
+        
+        VStack{
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+            
+        }.frame(width: 110, height: 150)
+            .cornerRadius(5)
+    }
+}
+
+
+//view for the image gallery in the sheet that opens if the preview is clicked
+struct ExpandedImageGallerySheetView: View {
+    @Binding var imageExpanderPresented: Bool
+    var foodTruckName: String
+    var downloadedImages = [ImageData]()
+    
+    var body: some View {
+        VStack(alignment: .leading){
+            HStack{
+                Text("Bilder")
+                    .font(.title)
+                Spacer()
+                Button(action: {
+                    imageExpanderPresented = false
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.gray)
+                }
+            }
+            
+            Text(foodTruckName)
+                .foregroundColor(.gray)
+            
+            Spacer()
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                
+                HStack{
+                    ForEach(downloadedImages) { image in
+                        imageFullView(image: image.image)
+                            .padding(3)
+                    }
+                }
+            }
+            Spacer()
+        }
+        .padding(20)
+    }
+}
+
+
+//view for the big images in the image gallery if they are clicked
+struct imageFullView: View {
+    @State private var scale: CGFloat = 1.0
+    var image : UIImage
+    
+    var body : some View{
+        
+        VStack{
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .scaleEffect(scale)
+            // allows the user to zoom in on the picture
+                .gesture(
+                MagnificationGesture()
+                    .onChanged{ value in
+                        scale = value.magnitude
+                    }
+                // resets the size of the picture if it is made too small and the zooming has stopped
+                    .onEnded{ value in
+                        if scale < 0.5 {
+                            scale = 1.0
+                        }
+                    }
+                
+                )
+                
+            
+        }.frame(width: 250, height: 400)
+            .cornerRadius(20)
     }
 }

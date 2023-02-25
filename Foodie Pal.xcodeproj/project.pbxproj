@@ -15,6 +15,14 @@
 		753D5894298FE34900C132B2 /* SheetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D5893298FE34800C132B2 /* SheetExtension.swift */; };
 		753D5896298FFB8700C132B2 /* FoodTrucks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D5895298FFB8600C132B2 /* FoodTrucks.swift */; };
 		753D589B29980CA700C132B2 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 753D589A29980CA700C132B2 /* FirebaseStorage */; };
+		753D589F299BA8EC00C132B2 /* ImageGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D589E299BA8EB00C132B2 /* ImageGalleryView.swift */; };
+		753D58A1299BBD6C00C132B2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58A0299BBD6C00C132B2 /* ImagePicker.swift */; };
+		753D58AB299D249B00C132B2 /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58AA299D249B00C132B2 /* ImageData.swift */; };
+		753D58AE299E2F6200C132B2 /* FoodTrucksList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58AD299E2F6100C132B2 /* FoodTrucksList.swift */; };
+		753D58B029A0F78300C132B2 /* FoodTruckInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58AF29A0F78300C132B2 /* FoodTruckInfoView.swift */; };
+		753D58B229A1866200C132B2 /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58B129A1866100C132B2 /* MessagesView.swift */; };
+		753D58B629A191F900C132B2 /* MessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58B529A191F900C132B2 /* MessageData.swift */; };
+		753D58B829A19D3300C132B2 /* UserMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D58B729A19D3300C132B2 /* UserMessages.swift */; };
 		7579064F29810A17003D5155 /* Foodie_PalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579064E29810A17003D5155 /* Foodie_PalApp.swift */; };
 		7579065129810A17003D5155 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7579065029810A17003D5155 /* ContentView.swift */; };
 		7579065329810A1D003D5155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7579065229810A1D003D5155 /* Assets.xcassets */; };
@@ -26,6 +34,7 @@
 		7579067E2981252F003D5155 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 7579067D2981252F003D5155 /* FirebaseFirestore */; };
 		757906802981252F003D5155 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7579067F2981252F003D5155 /* FirebaseFirestoreSwift */; };
 		757906822981252F003D5155 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 757906812981252F003D5155 /* FirebaseFunctions */; };
+		7583F07029A3F36E00D4243E /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7583F06F29A3F36D00D4243E /* LocationManager.swift */; };
 		75D2ECF2298416F000B4217D /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2ECF1298416F000B4217D /* MapView.swift */; };
 		75D2ECF42984170600B4217D /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2ECF32984170600B4217D /* ListView.swift */; };
 		75D2ECF62984171500B4217D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D2ECF52984171500B4217D /* SettingsView.swift */; };
@@ -57,6 +66,14 @@
 		753D588E298CDEA800C132B2 /* MapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
 		753D5893298FE34800C132B2 /* SheetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetExtension.swift; sourceTree = "<group>"; };
 		753D5895298FFB8600C132B2 /* FoodTrucks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTrucks.swift; sourceTree = "<group>"; };
+		753D589E299BA8EB00C132B2 /* ImageGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGalleryView.swift; sourceTree = "<group>"; };
+		753D58A0299BBD6C00C132B2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		753D58AA299D249B00C132B2 /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
+		753D58AD299E2F6100C132B2 /* FoodTrucksList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTrucksList.swift; sourceTree = "<group>"; };
+		753D58AF29A0F78300C132B2 /* FoodTruckInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckInfoView.swift; sourceTree = "<group>"; };
+		753D58B129A1866100C132B2 /* MessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
+		753D58B529A191F900C132B2 /* MessageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageData.swift; sourceTree = "<group>"; };
+		753D58B729A19D3300C132B2 /* UserMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMessages.swift; sourceTree = "<group>"; };
 		7579064B29810A17003D5155 /* Foodie Pal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Foodie Pal.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7579064E29810A17003D5155 /* Foodie_PalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalApp.swift; sourceTree = "<group>"; };
 		7579065029810A17003D5155 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -67,6 +84,7 @@
 		7579066529810A1F003D5155 /* Foodie PalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Foodie PalUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7579066929810A1F003D5155 /* Foodie_PalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalUITests.swift; sourceTree = "<group>"; };
 		7579066B29810A1F003D5155 /* Foodie_PalUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foodie_PalUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		7583F06F29A3F36D00D4243E /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		75D2ECF1298416F000B4217D /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		75D2ECF32984170600B4217D /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		75D2ECF52984171500B4217D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -108,6 +126,13 @@
 				75D2ECF52984171500B4217D /* SettingsView.swift */,
 				753D588629854DE900C132B2 /* UserSettingsView.swift */,
 				753D588B298A349600C132B2 /* UserSettingsEditView.swift */,
+				753D589E299BA8EB00C132B2 /* ImageGalleryView.swift */,
+				753D58B129A1866100C132B2 /* MessagesView.swift */,
+				753D58A0299BBD6C00C132B2 /* ImagePicker.swift */,
+				753D58882988020C00C132B2 /* UserSettings.swift */,
+				753D58AA299D249B00C132B2 /* ImageData.swift */,
+				753D58B529A191F900C132B2 /* MessageData.swift */,
+				753D58B729A19D3300C132B2 /* UserMessages.swift */,
 			);
 			path = "Settings Tab";
 			sourceTree = "<group>";
@@ -116,6 +141,10 @@
 			isa = PBXGroup;
 			children = (
 				75D2ECF1298416F000B4217D /* MapView.swift */,
+				753D588E298CDEA800C132B2 /* MapModel.swift */,
+				753D5893298FE34800C132B2 /* SheetExtension.swift */,
+				753D5895298FFB8600C132B2 /* FoodTrucks.swift */,
+				7583F06F29A3F36D00D4243E /* LocationManager.swift */,
 			);
 			path = "Map Tab";
 			sourceTree = "<group>";
@@ -125,6 +154,16 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		753D58AC299D4EB900C132B2 /* List Tab */ = {
+			isa = PBXGroup;
+			children = (
+				75D2ECF32984170600B4217D /* ListView.swift */,
+				753D58AF29A0F78300C132B2 /* FoodTruckInfoView.swift */,
+				753D58AD299E2F6100C132B2 /* FoodTrucksList.swift */,
+			);
+			path = "List Tab";
 			sourceTree = "<group>";
 		};
 		7579064229810A16003D5155 = {
@@ -158,10 +197,6 @@
 				7579065229810A1D003D5155 /* Assets.xcassets */,
 				753D58842985451A00C132B2 /* GoogleService-Info.plist */,
 				7579065429810A1D003D5155 /* Preview Content */,
-				753D58882988020C00C132B2 /* UserSettings.swift */,
-				753D588E298CDEA800C132B2 /* MapModel.swift */,
-				753D5893298FE34800C132B2 /* SheetExtension.swift */,
-				753D5895298FFB8600C132B2 /* FoodTrucks.swift */,
 			);
 			path = "Foodie Pal";
 			sourceTree = "<group>";
@@ -194,9 +229,9 @@
 		75D2ECF0298416AD00B4217D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				753D58AC299D4EB900C132B2 /* List Tab */,
 				753D5892298FE2DE00C132B2 /* Map Tab */,
 				753D588A298A344D00C132B2 /* Settings Tab */,
-				75D2ECF32984170600B4217D /* ListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -342,17 +377,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				753D58A1299BBD6C00C132B2 /* ImagePicker.swift in Sources */,
 				75D2ECF62984171500B4217D /* SettingsView.swift in Sources */,
+				753D58B229A1866200C132B2 /* MessagesView.swift in Sources */,
+				753D58B829A19D3300C132B2 /* UserMessages.swift in Sources */,
 				753D588F298CDEA800C132B2 /* MapModel.swift in Sources */,
 				753D5896298FFB8700C132B2 /* FoodTrucks.swift in Sources */,
+				753D589F299BA8EC00C132B2 /* ImageGalleryView.swift in Sources */,
+				753D58AE299E2F6200C132B2 /* FoodTrucksList.swift in Sources */,
 				75D2ECF42984170600B4217D /* ListView.swift in Sources */,
 				7579065129810A17003D5155 /* ContentView.swift in Sources */,
 				75D2ECF2298416F000B4217D /* MapView.swift in Sources */,
 				753D58892988020C00C132B2 /* UserSettings.swift in Sources */,
+				7583F07029A3F36E00D4243E /* LocationManager.swift in Sources */,
+				753D58B029A0F78300C132B2 /* FoodTruckInfoView.swift in Sources */,
 				753D588729854DE900C132B2 /* UserSettingsView.swift in Sources */,
+				753D58B629A191F900C132B2 /* MessageData.swift in Sources */,
 				753D5894298FE34900C132B2 /* SheetExtension.swift in Sources */,
 				753D588C298A349600C132B2 /* UserSettingsEditView.swift in Sources */,
 				7579064F29810A17003D5155 /* Foodie_PalApp.swift in Sources */,
+				753D58AB299D249B00C132B2 /* ImageData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,6 +558,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Foodie-Pal-Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Dela din plats med oss så vi kan visa var du är på kartan!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -543,6 +588,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Foodie-Pal-Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Dela din plats med oss så vi kan visa var du är på kartan!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

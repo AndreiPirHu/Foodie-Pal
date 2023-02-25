@@ -13,31 +13,22 @@ import FirebaseFirestore
 struct UserSettingsView: View {
     @State var userSettings = [UserSettings]()
     @State var isLoggedOut = false
+    @State var goToImageGallery = false
+    @State var goToMessages = false
     
     @State var selectedTime = Date()
     
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    var sendSetting = ["description", "email", "name", "address"]
-    
+    var sendSetting = ["description", "email", "title", "address"]
     
     let db = Firestore.firestore()
     
     var body: some View {
         
+       // ScrollView{
             VStack{
                 ForEach(userSettings) { setting in
                     
-                    Text("Hello, \(setting.name)")
-                        //.padding(.bottom, 10)
+                    Text("Välkommen \(setting.name)!")
                         .padding(.top, 30)
                         .font(.title)
                     
@@ -77,7 +68,36 @@ struct UserSettingsView: View {
                     
                     
                 }
-
+                
+                Button(action: {
+                    goToImageGallery = true
+                }) {
+                    Text("Bildgalleri")
+                        .foregroundColor(.white)
+                        .bold()
+                        .frame(width: 200,height: 40)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color.blue)
+                        )
+                    
+                        .padding(.bottom, 5)
+                }
+                
+                Button(action: {
+                    goToMessages = true
+                }) {
+                    Text("Meddelanden")
+                        .foregroundColor(.white)
+                        .bold()
+                        .frame(width: 200,height: 40)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color.blue)
+                        )
+                    
+                        .padding(.bottom, 40)
+                }
                 
                 Button(action: {
                     logOut()
@@ -90,7 +110,7 @@ struct UserSettingsView: View {
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 .fill(Color.red)
                         )
-                        
+                    
                         .padding(.bottom, 40)
                 }
                 
@@ -102,6 +122,14 @@ struct UserSettingsView: View {
             .navigationDestination(isPresented: $isLoggedOut ) {
                 SettingsView().navigationBarBackButtonHidden(true)
             }
+            .navigationDestination(isPresented: $goToImageGallery ) {
+                ImageGalleryView()
+            }
+            .navigationDestination(isPresented: $goToMessages ) {
+                MessagesView()
+            }
+       // }
+        
     }
     
     
@@ -138,7 +166,7 @@ struct UserSettingsView: View {
                 
                 if let description = data?["description"] as? String,
                    let email = data?["email"] as? String,
-                   let name = data?["name"] as? String,
+                   let name = data?["title"] as? String,
                    let address = data?["address"] as? String,
                    let schedMonOpen = data?["schedMonOpen"] as? String,
                    let schedMonClose = data?["schedMonClose"] as? String,
