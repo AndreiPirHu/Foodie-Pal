@@ -12,6 +12,7 @@ import FirebaseAuth
 
 
 struct MessagesView: View {
+    @Environment(\.presentationMode) var presentationMode
     @State var message: String = ""
     @State var userMessages = [UserMessages]()
     @State private var textEditorHeight: CGFloat = 100 // Set initial height
@@ -84,6 +85,20 @@ struct MessagesView: View {
             updateListFromFirestore()
             
         }
+        .navigationBarBackButtonHidden()
+        .toolbar{
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "arrow.backward.circle.fill")
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .padding(.vertical, 5)
+                        .foregroundColor(.white)
+                }
+            }
+        }
     }
     
     
@@ -132,7 +147,7 @@ struct MessagesView: View {
         guard let userUid = Auth.auth().currentUser?.uid else {return}
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEE d MMM HH:mm"
+        dateFormatter.dateFormat = "EEE d MMM. HH:mm"
         
         let date = Date()
         let dateString = dateFormatter.string(from: date)

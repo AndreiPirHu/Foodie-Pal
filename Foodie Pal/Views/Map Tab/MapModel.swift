@@ -157,7 +157,8 @@ class MapAPI: ObservableObject {
                 let name = details.name
                 
                 self.coordinates = [lat, lon]
-                self.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: lat, longitude: lon), span:MKCoordinateSpan(latitudeDelta: delta, longitudeDelta: delta))
+                //centers the map on the new location. Removed it due to no need for it atm
+               // self.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: lat, longitude: lon), span:MKCoordinateSpan(latitudeDelta: delta, longitudeDelta: delta))
                 
             
                 

@@ -96,6 +96,20 @@ struct UserSettingsEditView: View {
         .onAppear() {
             listenToFirestore()
         }
+        .navigationBarBackButtonHidden()
+        .toolbar{
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "arrow.backward.circle.fill")
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .padding(.vertical, 5)
+                        .foregroundColor(.gray)
+                }
+            }
+        }
     }
     
     

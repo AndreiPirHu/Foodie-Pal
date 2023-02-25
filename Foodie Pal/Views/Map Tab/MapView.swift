@@ -26,6 +26,8 @@ struct MapView: View {
     //@State private var isExpanded: Bool = false
     
     @State var downloadedImages = [ImageData]()
+    
+    var locationManager = LocationManager()
 
     let db = Firestore.firestore()
     let storage = Storage.storage()
@@ -35,7 +37,7 @@ struct MapView: View {
             VStack {
                
                 //Map centered on stockholm
-                Map(coordinateRegion: $mapAPI.region, annotationItems: mapAPI.locations) { location in
+                Map(coordinateRegion: $mapAPI.region, showsUserLocation: true, annotationItems: mapAPI.locations) { location in
                     
                     //Clickable map annotations with foodtruck information
                     MapAnnotation(coordinate: location.coordinate, anchorPoint: CGPoint(x: 0.5, y: 1)){
@@ -87,18 +89,45 @@ struct MapView: View {
                     // scrollView makes the sheet show the top of the page even when only showing a small part of it
                     ScrollView(.vertical, showsIndicators: false) {
                         FoodTruckSheetView(isSheetPresented: $isSheetPresented, downloadedImages: downloadedImages, foodTruck: foodTruck)
+                            
                     }
                     .onAppear{
                         //downloads the images once the sheet has appeared so that extra clicks dont runt it several times
                         downloadImages(uid: foodTruck.uid)
+                        
                     }
                 }
                 onDismiss: {isSheetPresented = false}
-               
+                    .overlay(alignment: .topTrailing, content: {
+                        //Button centers map position on user position, if not available it centers on stockholm
+                        Button(action: {
+                            mapAPI.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locationManager.location?.latitude ?? 59.30713183216659, longitude: locationManager.location?.longitude ?? 18.07499885559082), span:MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
+                        }) {
+                            Image(systemName: "location.fill")
+                                .resizable()
+                                .frame(width: 30, height:30)
+                                .padding()
+                               
+                                
+
+                                .background(content: {
+                                    
+                                    Rectangle()
+                                        .fill(.ultraThinMaterial)
+                                        .cornerRadius(20)
+                                        
+                                        
+                                })
+                                .frame(width: 40, height: 40)
+                                .padding()
+                                .padding(.top, 40)
+                        }
+                    })
             }
             .onAppear() {
                 updateMarkersFirestore()
-
+                locationManager.startLocationUpdates()
+                
                 
             }
     }
