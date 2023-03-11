@@ -1,4 +1,4 @@
-# Foodie-Pal
+# Foodie Pal
 Foodie Pal is a food truck tracker made with SwiftUI.
 
 
